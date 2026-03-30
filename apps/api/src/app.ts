@@ -14,7 +14,6 @@ import { workspacesRouter } from './routes/workspaces.js';
 import { gdprRouter } from './routes/gdpr.js';
 import { webhooksRouter } from './routes/webhooks.js';
 import { paymentsRouter } from './routes/payments.js';
-import { aiRouter } from './routes/ai.js';
 
 dotenv.config();
 
@@ -69,7 +68,6 @@ app.use('/api/workspaces', workspacesRouter);
 app.use('/api/gdpr', gdprRouter);
 app.use('/api', webhooksRouter);
 app.use('/api/payments', paymentsRouter);
-app.use('/api/ai', aiRouter);
 
 // 404 handler
 app.use((_req, res) => {

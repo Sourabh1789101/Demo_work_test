@@ -16,13 +16,11 @@ import {
   Users,
   TrendingUp,
   Eye,
-  Wand2,
 } from 'lucide-react';
 import { formService } from '../services/formService';
 import type { StoredForm } from '../services/formService';
 import { useBuilderStore } from '../../modules/store/builderStore';
 import { ShareModal } from '../components/shared/ShareModal';
-import { AIFormGeneratorModal } from '../components/AIFormGeneratorModal';
 
 const KIM_LOGO = () => (
   <div className="flex items-center gap-2.5">
@@ -195,7 +193,6 @@ export const DashboardPage: React.FC = () => {
   const [search, setSearch] = useState('');
   const [sortBy, setSortBy] = useState<'updated' | 'name'>('updated');
   const [shareFormId, setShareFormId] = useState<string | null>(null);
-  const [showAI, setShowAI] = useState(false);
   const { resetSchema, setSchema } = useBuilderStore();
 
   useEffect(() => {
@@ -244,16 +241,6 @@ export const DashboardPage: React.FC = () => {
       {shareFormId && (
         <ShareModal formId={shareFormId} onClose={() => setShareFormId(null)} />
       )}
-      {showAI && (
-        <AIFormGeneratorModal
-          isOpen={showAI}
-          onClose={() => setShowAI(false)}
-          onFormGenerated={(formId) => {
-            setShowAI(false);
-            navigate(`/builder/${formId}`);
-          }}
-        />
-      )}
       {/* Top Nav */}
       <nav className="bg-white border-b border-gray-100 sticky top-0 z-20">
         <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
@@ -266,14 +253,6 @@ export const DashboardPage: React.FC = () => {
             >
               <LayoutTemplate size={16} />
               Templates
-            </button>
-            <button
-              type="button"
-              onClick={() => setShowAI(true)}
-              className="hidden sm:flex items-center gap-2 px-4 py-2 text-sm font-medium text-blue-600 hover:text-blue-700 hover:bg-blue-50 rounded-lg transition-colors"
-            >
-              <Wand2 size={16} />
-              Create with AI
             </button>
             <button
               type="button"

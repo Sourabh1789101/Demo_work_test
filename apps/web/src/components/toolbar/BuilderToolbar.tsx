@@ -5,7 +5,6 @@ import { downloadHTML } from '../../utils/exportForm';
 import { formService } from '../../services/formService';
 import { ShareModal } from '../shared/ShareModal';
 import { TemplatesModal } from '../TemplatesModal';
-import { AIFormGeneratorModal } from '../AIFormGeneratorModal';
 import {
   Undo2,
   Redo2,
@@ -26,7 +25,6 @@ import {
   Zap,
   Check,
   ChevronDown,
-  Wand2,
 } from 'lucide-react';
 
 const KIM_LOGO = () => (
@@ -48,7 +46,6 @@ export const BuilderToolbar: React.FC = () => {
   const [saveStatus, setSaveStatus] = useState<'idle' | 'saved' | 'error'>('idle');
   const [showTemplates, setShowTemplates] = useState(false);
   const [showShare, setShowShare] = useState(false);
-  const [showAI, setShowAI] = useState(false);
   const [showExportMenu, setShowExportMenu] = useState(false);
 
   const {
@@ -106,13 +103,6 @@ export const BuilderToolbar: React.FC = () => {
       {showShare && savedFormId && (
         <ShareModal formId={savedFormId} onClose={() => setShowShare(false)} />
       )}
-      {showAI && (
-        <AIFormGeneratorModal
-          isOpen={showAI}
-          onClose={() => setShowAI(false)}
-          onFormGenerated={() => setShowAI(false)}
-        />
-      )}
 
       <header className="h-14 bg-white border-b border-gray-200 flex items-center justify-between px-4 shrink-0 shadow-sm z-10">
         {/* Left */}
@@ -159,16 +149,6 @@ export const BuilderToolbar: React.FC = () => {
           >
             <LayoutTemplate size={14} />
             Templates
-          </button>
-
-          {/* AI Generator */}
-          <button
-            type="button"
-            onClick={() => setShowAI(true)}
-            className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold text-blue-600 hover:bg-blue-50 hover:text-blue-700 rounded-lg transition-colors"
-          >
-            <Wand2 size={14} />
-            AI Generate
           </button>
 
           {/* Export dropdown */}

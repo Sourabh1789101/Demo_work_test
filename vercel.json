@@ -1,8 +1,8 @@
 {
-  "buildCommand": "npm run build",
+  "buildCommand": "npm --workspace apps/web run build",
   "installCommand": "npm ci --legacy-peer-deps",
   "outputDirectory": "apps/web/dist",
-  "framework": "react",
+  "framework": "vite",
   "env": {
     "VITE_API_BASE_URL": "@api_base_url",
     "VITE_STRIPE_PUBLISHABLE_KEY": "@stripe_publishable_key"
@@ -20,8 +20,8 @@
   "functions": {
     "api/**/*.ts": {
       "runtime": "node20.x",
-      "memory": 3008,
-      "maxDuration": 30
+      "memory": 1024,
+      "maxDuration": 10
     }
   },
   "regions": ["iad1"],

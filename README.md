@@ -40,7 +40,6 @@ npm run dev
 | Feature | Status |
 |---------|--------|
 | **Drag-and-drop form builder** | ✅ 20+ field types |
-| **AI form generation** | ✅ Claude 3.5 Sonnet integration |
 | **Authentication** | ✅ JWT + Login/Signup/Demo mode |
 | **Responsive preview** | ✅ Desktop/Tablet/Mobile frames |
 | **Form templates** | ✅ 29 templates × 12 categories |
@@ -49,7 +48,7 @@ npm run dev
 | **Analytics** | ✅ Dashboard + per-form stats |
 | **Webhooks** | ✅ Zapier, Make.com, n8n |
 | **GDPR** | ✅ Export + right to erasure |
-| **Rate limiting** | ✅ General + Auth + Submission + AI |
+| **Rate limiting** | ✅ General + Auth + Submission |
 | **Export** | ✅ HTML + JSON |
 
 ---
@@ -79,7 +78,6 @@ npm run dev
 | **Frontend** | React 18 + TypeScript + Vite + Tailwind CSS + Zustand |
 | **Backend** | Express 5 + Node.js |
 | **Database** | PostgreSQL 16 (NeonDB for production) |
-| **AI** | Claude 3.5 Sonnet (Anthropic SDK) |
 | **Auth** | JWT + bcrypt |
 | **Drag/Drop** | @dnd-kit |
 | **Deployment** | Vercel Functions |
@@ -140,30 +138,6 @@ docker compose -f infrastructure/docker/docker-compose.prod.yml up
 
 ---
 
-## 🤖 AI Form Generator
-
-Generate complete forms from natural language prompts using **NVIDIA NIM** (free tier):
-
-```bash
-curl -X POST http://localhost:4000/api/ai/generate-form \
-  -H "Authorization: Bearer <token>" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "prompt": "Create a customer feedback form with email, rating, and comments"
-  }'
-```
-
-**Features:**
-- ✅ 10 generations/hour per user (rate limited)
-- ✅ **COMPLETELY FREE** (NVIDIA NIM free tier)
-- ✅ Full editor access post-generation
-- ✅ Metadata tracking (prompt, tokens, timestamp)
-- ✅ Llama 3.1 405B model powered
-
-**Setup:** Get API key from https://build.nvidia.com (free account)
-
----
-
 ## 🔐 Authentication
 
 - **Demo Mode:** Build forms without login (localStorage only)
@@ -220,12 +194,6 @@ docker compose up -d  # Start PostgreSQL
 psql $DATABASE_URL -c "SELECT 1"  # Test connection
 ```
 
-**AI generation not working?**
-```bash
-echo $ANTHROPIC_API_KEY  # Check if set
-# If empty, add to apps/api/.env and restart
-```
-
 **See more issues:** [Troubleshooting Guide](./DOCUMENTATION.md#troubleshooting)
 
 ---
@@ -240,7 +208,6 @@ PORT=4000
 DATABASE_URL=postgresql://...
 JWT_SECRET=<random-32-chars>
 JWT_REFRESH_SECRET=<different-random-32-chars>
-NVIDIA_NIM_API_KEY=nvapi-xxxxx
 ```
 
 ### Optional
@@ -276,7 +243,6 @@ node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"
 - ✅ REST API
 - ✅ JWT authentication
 - ✅ PostgreSQL database
-- ✅ Claude AI integration
 - ✅ Stripe payments
 - ✅ Google Sheets sync
 - ✅ Webhooks (Zapier, Make, n8n)
