@@ -113,16 +113,24 @@ packages/             # Shared types & utilities
 
 ## 🚀 Deployment
 
-### Option 1: Vercel (Recommended)
+### Option 1: Vercel (Recommended - FREE)
 
-**Fastest path to production (5 minutes):**
+**Fastest path to production (30 minutes):**
 
-1. Push to GitHub
-2. Import on Vercel
-3. Add environment variables
-4. Deploy
+1. **Read:** [`QUICK_DEPLOY.md`](./QUICK_DEPLOY.md) ← Start here!
+2. **Follow:** Step-by-step deployment checklist
+3. **Deploy:** Click "Deploy" on Vercel
+4. **Live:** Your form builder is now public! 🎉
 
-**See:** [Deployment Guide in DOCUMENTATION.md](./DOCUMENTATION.md#phase-1-deployment-on-vercel)
+**Cost:** FREE tier includes:
+- ✅ Unlimited frontend bandwidth
+- ✅ Serverless functions (100GB/month free)
+- ✅ NeonDB PostgreSQL (3GB free)
+- ✅ Custom domain support
+
+**Total Cost:** $0-2/month (if you test AI occasionally)
+
+**See:** [Detailed Free Deployment Guide](./DEPLOY_FREE.md) for advanced setup
 
 ### Option 2: Docker
 

@@ -50,7 +50,7 @@ class AuthService {
     localStorage.removeItem('user');
   }
 
-  private getAuthHeaders() {
+  private getAuthHeaders(): Record<string, string> {
     if (!this.accessToken) {
       return {};
     }

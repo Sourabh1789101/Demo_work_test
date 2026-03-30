@@ -1,10 +1,34 @@
 import Anthropic from '@anthropic-ai/sdk';
-import { FormSchema, FormComponent } from '../../../packages/shared-types/index.js';
 import { nanoid } from 'nanoid';
 
-const client = new Anthropic({
-  apiKey: process.env.ANTHROPIC_API_KEY,
-});
+// Types
+interface FormComponent {
+  id: string;
+  type: string;
+  label: string;
+  name?: string;
+  description?: string;
+  defaultValue?: any;
+  properties?: Record<string, any>;
+  validation?: Array<{ type: string; message?: string }>;
+  styles?: Record<string, any>;
+}
+
+interface FormSchema {
+  id: string;
+  version: number;
+  title: string;
+  description?: string;
+  createdAt: string;
+  updatedAt: string;
+  components: FormComponent[];
+  settings: {
+    submitButtonText: string;
+    layout: string;
+    theme: string;
+    successMessage?: string;
+  };
+}
 
 interface AIGenerationRequest {
   prompt: string;
@@ -18,6 +42,10 @@ interface AIGenerationResponse {
     output: number;
   };
 }
+
+const client = new Anthropic({
+  apiKey: process.env.ANTHROPIC_API_KEY,
+});
 
 export class AIFormGeneratorService {
   static async generateFormFromPrompt(

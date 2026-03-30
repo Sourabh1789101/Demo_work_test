@@ -14,7 +14,6 @@ import {
   ChevronRight,
   X,
 } from 'lucide-react';
-import { Navbar } from '../components/Navbar';
 import { formService } from '../services/formService';
 import { submissionService, type Submission, type SubmissionStats } from '../services/submissionService';
 import type { FormSchema } from '../../modules/Core/types';

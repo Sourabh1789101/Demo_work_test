@@ -504,7 +504,6 @@ export const componentRegistry: ComponentDefinition[] = [
       properties: {
         amountCents: 1000,
         currency: 'usd',
-        helperText: 'Form submission payment',
         stripePublishableKey: '',
         helperText: 'Your payment is secured by Stripe.',
       },
