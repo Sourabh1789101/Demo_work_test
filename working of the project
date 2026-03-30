@@ -1,0 +1,339 @@
+🏗️ ARCHITECTURE OVERVIEW
+plain
+Copy
+┌─────────────────────────────────────────────────────────┐
+│                    DEVELOPER WORKFLOW                    │
+│  ┌─────────┐    ┌─────────┐    ┌─────────┐             │
+│  │   WEB   │◄──►│   API   │◄──►│    DB   │             │
+│  │ (React) │    │ (Node)  │    │(PostgreSQL)           │
+│  └────┬────┘    └────┬────┘    └─────────┘             │
+│       │              │                                   │
+│       └──────────────┘                                   │
+│              ▼                                          │
+│       ┌─────────────┐                                   │
+│       │  WebSocket   │  ◄── Real-time collaboration      │
+│       │   Server     │                                   │
+│       └─────────────┘                                   │
+└─────────────────────────────────────────────────────────┘
+📁 APPS/ DIRECTORY (Deployable Applications)
+apps/web/ - The React Frontend
+This is your BeeFree-style visual editor that users interact with.
+plain
+Copy
+apps/web/
+├── src/
+│   ├── components/          # UI building blocks
+│   │   ├── builder/          # Core drag-drop interface
+│   │   ├── dnd/              # Drag & drop system
+│   │   ├── form-components/  # Actual form field renderers
+│   │   ├── templates/        # Template gallery
+│   │   ├── themes/           # Styling system
+│   │   └── collaboration/    # Real-time cursors, presence
+│   │
+│   ├── hooks/                # Reusable logic
+│   │   ├── useFormBuilder.ts    # Main builder hook
+│   │   ├── useDragAndDrop.ts    # DND helpers
+│   │   ├── useCollaboration.ts  # WebSocket hooks
+│   │   └── ...
+│   │
+│   ├── stores/               # State management
+│   │   ├── formBuilderStore.ts  # Zustand main store
+│   │   ├── historyStore.ts      # Undo/redo tracking
+│   │   └── uiStore.ts           # UI state (sidebar open, etc)
+│   │
+│   ├── lib/                  # Business logic
+│   │   ├── validation/       # Form validation engine
+│   │   ├── utils/              # Helpers
+│   │   ├── componentRegistry.ts # Component definitions
+│   │   └── templateLibrary.ts   # Pre-built templates
+│   │
+│   ├── services/             # API communication
+│   │   ├── api.ts            # REST API client
+│   │   ├── websocketService.ts # Real-time connection
+│   │   └── storageService.ts   # LocalStorage, S3
+│   │
+│   ├── types/                # TypeScript definitions
+│   │   ├── form.ts
+│   │   ├── component.ts
+│   │   └── theme.ts
+│   │
+│   ├── views/                # Page-level components
+│   │   ├── BuilderView.tsx    # Main builder page
+│   │   ├── DashboardView.tsx  # Form list/dashboard
+│   │   └── PreviewView.tsx    # Published form view
+│   │
+│   └── styles/               # CSS, Tailwind, themes
+│
+└── public/                   # Static assets
+    └── templates/            # Template preview images
+How it works:
+User opens BuilderView.tsx
+formBuilderStore.ts loads form schema from API or localStorage
+ComponentPalette shows draggable items from componentRegistry.ts
+User drags → dnd/ system handles → updates store → Canvas re-renders
+User clicks component → PropertiesPanel opens with ValidationBuilder
+Auto-save triggers → storageService.ts persists to API
+apps/api/ - The Node.js Backend
+REST API that handles data persistence, authentication, and business logic.
+plain
+Copy
+apps/api/
+├── src/
+│   ├── config/               # Service connections
+│   │   ├── database.ts       # PostgreSQL connection
+│   │   ├── redis.ts          # Redis cache/pub-sub
+│   │   ├── s3.ts             # File uploads
+│   │   └── passport.ts       # Auth strategies
+│   │
+│   ├── controllers/          # Request handlers
+│   │   ├── formController.ts      # CRUD for forms
+│   │   ├── submissionController.ts # Form submissions
+│   │   ├── authController.ts       # Login/register
+│   │   └── analyticsController.ts  # Usage stats
+│   │
+│   ├── models/               # Database schemas (Prisma/TypeORM)
+│   │   ├── Form.ts           # Form definition
+│   │   ├── Submission.ts     # User submission data
+│   │   ├── User.ts             # User account
+│   │   └── Team.ts             # Organization/team
+│   │
+│   ├── routes/               # API endpoint definitions
+│   │   ├── forms.ts          # /api/forms/*
+│   │   ├── submissions.ts    # /api/submissions/*
+│   │   ├── auth.ts           # /api/auth/*
+│   │   └── webhooks.ts       # /api/webhooks/*
+│   │
+│   ├── middleware/           # Request processing pipeline
+│   │   ├── auth.ts           # JWT verification
+│   │   ├── rateLimiter.ts    # Prevent abuse
+│   │   ├── errorHandler.ts   # Global error handling
+│   │   └── logger.ts         # Request logging
+│   │
+│   ├── services/             # Business logic layer
+│   │   ├── FormService.ts    # Form CRUD operations
+│   │   ├── EmailService.ts   # Send notifications
+│   │   ├── WebhookService.ts # Trigger external webhooks
+│   │   └── CacheService.ts   # Redis caching
+│   │
+│   ├── workers/              # Background job processors
+│   │   ├── submissionProcessor.ts  # Process form submissions
+│   │   ├── emailWorker.ts          # Send emails in bulk
+│   │   └── reportGenerator.ts      # Generate analytics reports
+│   │
+│   └── utils/                # Helpers
+│       ├── encryption.ts     # Data encryption
+│       └── sanitizers.ts     # Input cleaning
+│
+├── migrations/               # Database schema changes
+├── tests/                    # Test suites
+│   ├── unit/                 # Individual function tests
+│   ├── integration/          # API endpoint tests
+│   └── e2e/                  # Full workflow tests
+│
+└── Dockerfile                # Container definition
+Request Flow:
+plain
+Copy
+User Request → Nginx → Route → Middleware (auth, rate limit) 
+                                    ↓
+                              Controller (validate input)
+                                    ↓
+                              Service (business logic)
+                                    ↓
+                              Model (database query)
+                                    ↓
+                              Response
+apps/websocket/ - Real-Time Collaboration Server
+Separate service for WebSocket connections (horizontal scaling).
+plain
+Copy
+apps/websocket/
+├── src/
+│   ├── handlers/
+│   │   ├── presenceHandler.ts    # "User is typing", online status
+│   │   ├── cursorHandler.ts      # Live cursor positions
+│   │   ├── operationHandler.ts   # Operational Transform (OT)
+│   │   └── roomHandler.ts        # Join/leave form editing rooms
+│   │
+│   └── utils/
+│       ├── operationalTransform.ts  # Conflict resolution algorithm
+│       └── conflictResolver.ts      # Merge concurrent edits
+│
+└── server.ts                   # WebSocket entry point
+Why separate?
+WebSockets need long-lived connections (different from HTTP)
+Can scale independently (1000s of concurrent editors)
+Redis pub-sub syncs across multiple WebSocket servers
+📁 PACKAGES/ DIRECTORY (Shared Libraries)
+Code reused across multiple apps.
+plain
+Copy
+packages/
+├── shared-types/           # TypeScript definitions shared by all apps
+│   └── src/
+│       ├── form.ts         # FormSchema, Component interfaces
+│       ├── component.ts    # ComponentType, ValidationRule
+│       ├── validation.ts   # ValidationResult, etc.
+│       └── api.ts          # API request/response types
+│
+│   Why? Web, API, and WebSocket all need same type definitions
+│   Prevents "API returns X but frontend expects Y" bugs
+
+├── ui-components/          # Shared React components
+│   └── src/
+│       ├── Button/
+│       ├── Input/
+│       ├── Modal/
+│       └── index.ts
+│
+│   Why? Consistent design system across all frontend apps
+
+└── validation-utils/       # Shared validation logic
+    └── src/
+        ├── validators.ts   # Zod schemas, validation functions
+        ├── sanitizers.ts   # Input cleaning
+        └── transformers.ts # Data format conversions
+📁 INFRASTRUCTURE/ DIRECTORY (DevOps)
+Everything needed to deploy and run the system.
+plain
+Copy
+infrastructure/
+├── docker/                 # Container orchestration
+│   ├── docker-compose.dev.yml    # Local development stack
+│   ├── docker-compose.prod.yml     # Production deployment
+│   └── monitoring/
+│       ├── prometheus.yml          # Metrics collection
+│       └── grafana-dashboards/     # Visual dashboards
+│
+│   Usage: docker-compose -f docker-compose.dev.yml up
+│   Spins up: PostgreSQL, Redis, MinIO (S3), App containers
+
+├── kubernetes/             # Production orchestration (K8s)
+│   ├── base/               # Shared configurations
+│   │   ├── namespace.yaml      # "form-builder" namespace
+│   │   ├── configmap.yaml      # Environment variables
+│   │   └── secrets.yaml        # API keys, passwords
+│   │
+│   ├── apps/               # Per-app deployments
+│   │   ├── web-deployment.yaml   # 3 React frontend replicas
+│   │   ├── api-deployment.yaml   # 2 API server replicas
+│   │   ├── ws-deployment.yaml    # 2 WebSocket server replicas
+│   │   └── worker-deployment.yaml # Background job processors
+│   │
+│   ├── services/           # Network routing
+│   │   ├── web-service.yaml      # ClusterIP for frontend
+│   │   ├── api-service.yaml      # ClusterIP for API
+│   │   └── postgres-service.yaml # Database connection
+│   │
+│   └── ingress/            # External access
+│       └── ingress.yaml    # Routes example.com → services
+│
+│   Usage: kubectl apply -k infrastructure/kubernetes/
+│   Deploys entire stack to AWS/GCP/Azure
+
+├── terraform/              # Infrastructure as Code (IaC)
+│   ├── modules/
+│   │   ├── vpc/            # Network setup
+│   │   ├── eks/            # AWS Kubernetes cluster
+│   │   ├── rds/            # Managed PostgreSQL
+│   │   └── s3/             # File storage buckets
+│   │
+│   ├── main.tf             # Defines all infrastructure
+│   ├── variables.tf        # Configurable inputs
+│   └── outputs.tf          # Generated values (URLs, IPs)
+│
+│   Usage: terraform apply
+│   Creates: VPC, EKS cluster, RDS database, S3 buckets
+│   Destroys: terraform destroy (clean up everything)
+
+└── nginx/                  # Reverse proxy configuration
+    ├── nginx.conf          # Main config
+    ├── ssl/                # TLS certificates
+    └── conf.d/
+        ├── security.conf   # Headers, DDoS protection
+        └── rate-limiting.conf  # Request throttling
+📁 DOCS/ & SCRIPTS/ (Operations)
+plain
+Copy
+docs/
+├── api/
+│   └── openapi.yaml        # API documentation (Swagger)
+│       # Defines: endpoints, request/response schemas, auth
+│       # Used by: frontend devs, external integrators
+│
+├── guides/
+│   ├── getting-started.md  # New developer onboarding
+│   ├── deployment.md       # How to deploy to production
+│   ├── theming.md          # Creating custom themes
+│   └── api-integration.md  # Using the API
+│
+└── architecture/
+    ├── system-design.md    # How components interact
+    └── data-model.md       # Database entity relationships
+
+scripts/
+├── setup.sh                # One-command local setup
+│   # Installs dependencies, creates .env, starts Docker
+│
+├── dev-start.sh            # Start development environment
+│   # Runs: docker-compose, npm run dev, watches files
+│
+├── migrate.sh              # Database migrations
+│   # npx prisma migrate dev / npx knex migrate:latest
+│
+├── seed.sh                 # Add sample data
+│   # Creates: demo forms, test users, sample templates
+│
+└── deploy.sh               # Production deployment
+    # Builds images, pushes to registry, updates K8s
+🔧 CONFIGURATION FILES
+Table
+File	Purpose
+package.json (root)	Workspace definition, shared devDependencies
+turbo.json	Monorepo task runner (parallel builds, caching)
+docker-compose.yml	Local development stack orchestration
+Makefile	Shortcuts: make dev, make test, make deploy
+.env.example	Template for environment variables
+.github/workflows/	CI/CD: test on PR, deploy on merge
+🔄 DATA FLOW EXAMPLE
+User creates a form field:
+plain
+Copy
+1. Browser: User drags "Email" from ComponentPalette
+         ↓
+2. DND: @dnd-kit detects drop on Canvas
+         ↓
+3. Store: formBuilderStore.addComponent('email')
+         - Creates new component object
+         - Adds to schema.components array
+         - Saves to history (for undo)
+         - Updates updatedAt timestamp
+         ↓
+4. UI: Canvas re-renders with new component
+         ↓
+5. Auto-save: useAutoSave hook detects change
+         ↓
+6. API: POST /api/forms/{id} with new schema
+         ↓
+7. Backend: FormService.update() validates, saves to PostgreSQL
+         ↓
+8. WebSocket: Broadcasts change to other editors in same room
+         ↓
+9. Other Users: Their UI updates with live cursor + new field
+🚀 DEPLOYMENT TARGETS
+Table
+Environment	Command	Infrastructure
+Local dev	make dev	Docker Compose on laptop
+Staging	make deploy-staging	Kubernetes test cluster
+Production	make deploy-prod	Kubernetes production cluster
+👥 TEAM WORKFLOW
+plain
+Copy
+Frontend Dev          Backend Dev           DevOps Engineer
+     │                      │                       │
+     ├─ Edits React ────────┼─ Builds API ──────────┼─ Maintains K8s
+     │   components         │   endpoints           │   infrastructure
+     │                      │                       │
+     └─ Uses types ─────────┼─ Defines types ───────┼─ Monitors metrics
+        from shared-types      in shared-types          in Grafana
+This structure supports 10+ developers working in parallel without conflicts, automatic scaling to millions of users, and enterprise-grade reliability with monitoring, backups, and disaster recovery.

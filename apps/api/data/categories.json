@@ -1,0 +1,74 @@
+[
+  {
+    "slug": "job-application-forms",
+    "name": "Job Application Forms",
+    "description": "Professional templates for hiring and recruitment workflows.",
+    "template_count": "3"
+  },
+  {
+    "slug": "event-registration-forms",
+    "name": "Event Registration Forms",
+    "description": "Collect attendee information for conferences, parties, and workshops.",
+    "template_count": "3"
+  },
+  {
+    "slug": "feedback-forms",
+    "name": "Feedback Forms",
+    "description": "Gather ratings, reviews, and improvement insights from customers.",
+    "template_count": "3"
+  },
+  {
+    "slug": "medical-forms",
+    "name": "Medical Forms",
+    "description": "Secure patient intake, consent, and health screening forms.",
+    "template_count": "2"
+  },
+  {
+    "slug": "contact-forms",
+    "name": "Contact Forms",
+    "description": "Simple and professional forms to capture leads and enquiries.",
+    "template_count": "3"
+  },
+  {
+    "slug": "education-forms",
+    "name": "Education Forms",
+    "description": "Enrollment, course registration, and student assessment forms.",
+    "template_count": "3"
+  },
+  {
+    "slug": "ecommerce-order-forms",
+    "name": "E-Commerce & Order Forms",
+    "description": "Product ordering, pre-order, and custom request forms.",
+    "template_count": "3"
+  },
+  {
+    "slug": "survey-forms",
+    "name": "Survey Forms",
+    "description": "Market research, opinion polls, and data collection surveys.",
+    "template_count": "3"
+  },
+  {
+    "slug": "appointment-booking-forms",
+    "name": "Appointment & Booking Forms",
+    "description": "Schedule consultations, services, and appointments online.",
+    "template_count": "3"
+  },
+  {
+    "slug": "newsletter-subscription-forms",
+    "name": "Newsletter & Subscription Forms",
+    "description": "Grow your email list and capture subscriber preferences.",
+    "template_count": "2"
+  },
+  {
+    "slug": "volunteer-donation-forms",
+    "name": "Volunteer & Donation Forms",
+    "description": "Recruit volunteers and collect donor information for nonprofits.",
+    "template_count": "2"
+  },
+  {
+    "slug": "legal-compliance-forms",
+    "name": "Legal & Compliance Forms",
+    "description": "Consent forms, waivers, and compliance documentation.",
+    "template_count": "2"
+  }
+]

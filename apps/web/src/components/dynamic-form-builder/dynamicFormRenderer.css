@@ -1,0 +1,22 @@
+.dynamic-form-surface {
+  font-family: var(--dfr-font-family, inherit);
+  background: var(--dfr-background, #ffffff);
+}
+
+.dynamic-form-surface--image {
+  background-size: cover;
+  background-position: center;
+}
+
+.dynamic-form-submit {
+  background-color: var(--dfr-primary-color, #2563eb);
+  border-color: var(--dfr-primary-color, #2563eb);
+}
+
+.dynamic-form-rating-active {
+  color: var(--dfr-primary-color, #2563eb);
+}
+
+.dynamic-form-rating-inactive {
+  color: #d1d5db;
+}

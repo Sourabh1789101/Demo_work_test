@@ -1,0 +1,1 @@
+export const transformIdentity = <T>(input: T) => input;
