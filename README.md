@@ -142,7 +142,7 @@ docker compose -f infrastructure/docker/docker-compose.prod.yml up
 
 ## 🤖 AI Form Generator
 
-Generate complete forms from natural language prompts using Claude:
+Generate complete forms from natural language prompts using **NVIDIA NIM** (free tier):
 
 ```bash
 curl -X POST http://localhost:4000/api/ai/generate-form \
@@ -155,11 +155,12 @@ curl -X POST http://localhost:4000/api/ai/generate-form \
 
 **Features:**
 - ✅ 10 generations/hour per user (rate limited)
-- ✅ ~$0.06 per generation
+- ✅ **COMPLETELY FREE** (NVIDIA NIM free tier)
 - ✅ Full editor access post-generation
 - ✅ Metadata tracking (prompt, tokens, timestamp)
+- ✅ Llama 3.1 405B model powered
 
-**Setup:** Add `ANTHROPIC_API_KEY` to `.env`
+**Setup:** Get API key from https://build.nvidia.com (free account)
 
 ---
 
@@ -239,7 +240,7 @@ PORT=4000
 DATABASE_URL=postgresql://...
 JWT_SECRET=<random-32-chars>
 JWT_REFRESH_SECRET=<different-random-32-chars>
-ANTHROPIC_API_KEY=sk-ant-v0-xxxxx
+NVIDIA_NIM_API_KEY=nvapi-xxxxx
 ```
 
 ### Optional

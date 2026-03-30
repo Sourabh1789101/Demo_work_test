@@ -111,7 +111,7 @@ export function AIFormGeneratorModal({ isOpen, onClose, onFormGenerated }: AIFor
 
           <div className="bg-blue-50 border border-blue-200 rounded-lg p-3">
             <p className="text-xs text-blue-900">
-              <strong>Tip:</strong> Be specific about the fields you need. For example: "Customer registration form with name, email, company, and password fields"
+              <strong>Powered by NVIDIA NIM (Free) 🚀:</strong> Generate unlimited forms using Llama 3.1 405B. Completely free, no credit card needed!
             </p>
           </div>
         </div>

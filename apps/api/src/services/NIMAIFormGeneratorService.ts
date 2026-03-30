@@ -1,5 +1,5 @@
-import Anthropic from '@anthropic-ai/sdk';
 import { nanoid } from 'nanoid';
+// Note: NVIDIA NIM uses REST API, no SDK needed
 
 // Types
 interface FormComponent {
@@ -37,22 +37,21 @@ interface AIGenerationRequest {
 
 interface AIGenerationResponse {
   schema: FormSchema;
-  tokensUsed: {
+  tokensUsed?: {
     input: number;
     output: number;
   };
 }
 
-const client = new Anthropic({
-  apiKey: process.env.ANTHROPIC_API_KEY,
-});
+export class NIMAIFormGeneratorService {
+  static readonly API_BASE_URL = 'https://integrate.api.nvidia.com/v1';
+  static readonly MODEL = 'meta/llama-3.1-405b-instruct';
 
-export class AIFormGeneratorService {
   static async generateFormFromPrompt(
     request: AIGenerationRequest,
   ): Promise<AIGenerationResponse> {
-    if (!process.env.ANTHROPIC_API_KEY) {
-      throw new Error('ANTHROPIC_API_KEY environment variable is not set');
+    if (!process.env.NVIDIA_NIM_API_KEY) {
+      throw new Error('NVIDIA_NIM_API_KEY environment variable is not set');
     }
 
     const systemPrompt = `You are an expert form builder AI. Your task is to generate a JSON form schema based on user descriptions.
@@ -101,35 +100,54 @@ FormSchema structure:
 Generate a complete, functional FormSchema JSON object that matches the description. Include all necessary fields, validations, and settings. Make it professional and user-friendly.`;
 
     try {
-      const response = await client.messages.create({
-        model: 'claude-3-5-sonnet-20241022',
-        max_tokens: 4096,
-        system: systemPrompt,
-        messages: [
-          {
-            role: 'user',
-            content: userPrompt,
-          },
-        ],
+      const response = await fetch(`${this.API_BASE_URL}/chat/completions`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${process.env.NVIDIA_NIM_API_KEY}`,
+        },
+        body: JSON.stringify({
+          model: this.MODEL,
+          messages: [
+            {
+              role: 'system',
+              content: systemPrompt,
+            },
+            {
+              role: 'user',
+              content: userPrompt,
+            },
+          ],
+          temperature: 0.7,
+          top_p: 0.9,
+          max_tokens: 4096,
+        }),
       });
 
+      if (!response.ok) {
+        const error = await response.text();
+        throw new Error(`NVIDIA NIM API error: ${response.status} - ${error}`);
+      }
+
+      const data = (await response.json()) as any;
+
       // Extract the text content
-      const textContent = response.content.find((block) => block.type === 'text');
-      if (!textContent || textContent.type !== 'text') {
-        throw new Error('No text response from Claude');
+      const textContent = data.choices?.[0]?.message?.content;
+      if (!textContent) {
+        throw new Error('No text response from NVIDIA NIM');
       }
 
       // Parse the JSON response
       let schema: FormSchema;
       try {
-        schema = JSON.parse(textContent.text);
+        schema = JSON.parse(textContent);
       } catch (parseError) {
         // Try to extract JSON if it's wrapped in markdown code blocks
-        const jsonMatch = textContent.text.match(/```(?:json)?\s*([\s\S]*?)\s*```/);
+        const jsonMatch = textContent.match(/```(?:json)?\s*([\s\S]*?)\s*```/);
         if (jsonMatch) {
           schema = JSON.parse(jsonMatch[1]);
         } else {
-          throw new Error('Failed to parse Claude response as JSON');
+          throw new Error('Failed to parse NVIDIA NIM response as JSON');
         }
       }
 
@@ -139,13 +157,13 @@ Generate a complete, functional FormSchema JSON object that matches the descript
       return {
         schema,
         tokensUsed: {
-          input: response.usage.input_tokens,
-          output: response.usage.output_tokens,
+          input: data.usage?.prompt_tokens || 0,
+          output: data.usage?.completion_tokens || 0,
         },
       };
     } catch (error) {
-      if (error instanceof Anthropic.APIError) {
-        throw new Error(`Claude API error: ${error.message}`);
+      if (error instanceof Error) {
+        throw new Error(`AI generation failed: ${error.message}`);
       }
       throw error;
     }

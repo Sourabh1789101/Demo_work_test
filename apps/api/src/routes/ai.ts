@@ -1,12 +1,12 @@
 import { Router, Request, Response } from 'express';
 import { authenticateToken } from '../middleware/auth.js';
 import { aiGenerationLimiter } from '../middleware/rateLimiter.js';
-import { AIFormGeneratorService } from '../services/AIFormGeneratorService.js';
+import { NIMAIFormGeneratorService } from '../services/NIMAIFormGeneratorService.js';
 import { pool } from '../config/database.js';
 
 const aiRouter = Router();
 
-// POST /api/ai/generate-form - Generate a form from a prompt
+// POST /api/ai/generate-form - Generate a form from a prompt using NVIDIA NIM
 aiRouter.post(
   '/generate-form',
   authenticateToken,
@@ -31,7 +31,7 @@ aiRouter.post(
       }
 
       // Validate prompt
-      const validation = AIFormGeneratorService.validatePrompt(prompt);
+      const validation = NIMAIFormGeneratorService.validatePrompt(prompt);
       if (!validation.valid) {
         return res.status(400).json({
           success: false,
@@ -39,8 +39,8 @@ aiRouter.post(
         });
       }
 
-      // Generate form using Claude
-      const { schema, tokensUsed } = await AIFormGeneratorService.generateFormFromPrompt({
+      // Generate form using NVIDIA NIM
+      const { schema, tokensUsed } = await NIMAIFormGeneratorService.generateFormFromPrompt({
         prompt,
         userId,
       });
@@ -57,7 +57,8 @@ aiRouter.post(
         prompt,
         tokensUsed,
         generatedAt: now.toISOString(),
-        model: 'claude-3-5-sonnet-20241022',
+        model: 'meta/llama-3.1-405b-instruct',
+        provider: 'NVIDIA NIM',
       };
 
       const result = await pool.query(query, [
@@ -82,6 +83,7 @@ aiRouter.post(
             schema,
           },
           tokensUsed,
+          provider: 'NVIDIA NIM (Free Tier)',
         },
       });
     } catch (error) {
@@ -90,20 +92,20 @@ aiRouter.post(
       const errorMessage = error instanceof Error ? error.message : 'Failed to generate form';
 
       // Check for specific error types
-      if (errorMessage.includes('ANTHROPIC_API_KEY')) {
+      if (errorMessage.includes('NVIDIA_NIM_API_KEY')) {
         return res.status(500).json({
           success: false,
           error: {
-            message: 'AI generation is not configured. Please contact support.',
+            message: 'AI generation is not configured. Please set NVIDIA_NIM_API_KEY environment variable.',
           },
         });
       }
 
-      if (errorMessage.includes('Claude API error')) {
+      if (errorMessage.includes('NVIDIA NIM API error')) {
         return res.status(503).json({
           success: false,
           error: {
-            message: 'Claude API is temporarily unavailable. Please try again later.',
+            message: 'NVIDIA NIM API is temporarily unavailable. Please try again later.',
           },
         });
       }
@@ -119,3 +121,4 @@ aiRouter.post(
 );
 
 export { aiRouter };
+
