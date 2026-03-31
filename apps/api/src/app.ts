@@ -93,34 +93,14 @@ app.use(
 
 export { app };
 
-// Only initialize database and listen if running locally (not in Vercel Functions)
-if (process.env.NODE_ENV !== 'production' || !process.env.VERCEL) {
-	void initDatabase()
-		.then(() => {
-			app.listen(port, () => {
-				logger.info(`API listening on http://localhost:${port}`);
-			});
-		})
-		.catch((error) => {
-			logger.error({ err: error }, 'Failed to initialize database');
-			process.exit(1);
+// Initialize database and listen
+void initDatabase()
+	.then(() => {
+		app.listen(port, () => {
+			logger.info(`API listening on http://localhost:${port}`);
 		});
-} else {
-	// For Vercel: initialize database silently on first request
-	let dbInitialized = false;
-	app.use((req, res, next) => {
-		if (!dbInitialized) {
-			initDatabase()
-				.then(() => {
-					dbInitialized = true;
-					next();
-				})
-				.catch((error) => {
-					logger.error({ err: error }, 'Failed to initialize database');
-					res.status(500).json({ success: false, error: { code: 'DB_INIT_ERROR', message: 'Database initialization failed' } });
-				});
-		} else {
-			next();
-		}
+	})
+	.catch((error) => {
+		logger.error({ err: error }, 'Failed to initialize database');
+		process.exit(1);
 	});
-}

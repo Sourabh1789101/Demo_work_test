@@ -1,37 +1,43 @@
 # KIM AI Form Builder
 
-**Enterprise-grade drag-and-drop form builder with AI-powered form generation, JWT authentication, and Vercel deployment.**
+**Local development form builder with drag-and-drop interface, JWT authentication, and PostgreSQL database.**
 
-**Version:** 0.1.0 (Beta) | **Status:** ✅ Production Ready | **Updated:** March 30, 2026
+**Version:** 0.1.0 (Beta) | **Status:** ✅ Development Ready | **Updated:** March 31, 2026
 
 ---
 
-## 🚀 Quick Start
+## 🚀 Quick Start (Local Only)
 
-### Local Development (3 minutes)
+### Prerequisites
+- Node.js 18+ (LTS recommended)
+- Docker & Docker Compose (for PostgreSQL)
+- npm 9+
+
+### Local Development (5 minutes)
 
 ```bash
-# Clone & install
-git clone <repo-url>
-cd kim-ai-form-builder
+# 1. Clone & install
+git clone https://github.com/Sourabh1789101/Demo_work_test.git
+cd Demo_work_test
 npm install
 
-# Configure environment
-cp apps/api/.env.example apps/api/.env
-# Edit apps/api/.env with your config
+# 2. Start PostgreSQL with Docker
+docker compose up -d
 
-# Start development server
+# 3. Configure environment
+cp apps/api/.env.example apps/api/.env
+# The .env file has sensible defaults for local development
+
+# 4. Start development server
 npm run dev
 
-# Open http://localhost:5173
+# 5. Open http://localhost:5173 in your browser
 ```
 
-### Deploy to Vercel (5 minutes)
-
-1. Push to GitHub
-2. Go to https://vercel.com → Import repository
-3. Add environment variables (DATABASE_URL, JWT_SECRET, ANTHROPIC_API_KEY)
-4. Click Deploy ✅
+### Stop the database
+```bash
+docker compose down
+```
 
 ---
 
@@ -59,15 +65,13 @@ npm run dev
 
 ### Key Sections
 
-1. **[Quick Start](./DOCUMENTATION.md#quick-start)** — 5-minute setup
+1. **[Local Development Setup](./DOCUMENTATION.md#local-setup)** — Docker + PostgreSQL
 2. **[Installation](./DOCUMENTATION.md#installation--setup)** — Prerequisites & configuration
 3. **[Running Locally](./DOCUMENTATION.md#running-locally)** — Development & testing
 4. **[API Reference](./DOCUMENTATION.md#api-endpoints)** — All endpoints
-5. **[Phase 1: Deployment](./DOCUMENTATION.md#phase-1-deployment-on-vercel)** — Vercel + NeonDB setup
-6. **[Phase 2: Authentication](./DOCUMENTATION.md#phase-2-authentication)** — JWT flow
-7. **[Phase 3: AI Generator](./DOCUMENTATION.md#phase-3-ai-form-generator)** — Claude integration
-8. **[Database Schema](./DOCUMENTATION.md#database-schema)** — Tables & columns
-9. **[Troubleshooting](./DOCUMENTATION.md#troubleshooting)** — Common issues
+5. **[Authentication](./DOCUMENTATION.md#authentication)** — JWT flow
+6. **[Database Schema](./DOCUMENTATION.md#database-schema)** — Tables & columns
+7. **[Troubleshooting](./DOCUMENTATION.md#troubleshooting)** — Common issues
 
 ---
 
@@ -77,10 +81,9 @@ npm run dev
 |-------|-----------|
 | **Frontend** | React 18 + TypeScript + Vite + Tailwind CSS + Zustand |
 | **Backend** | Express 5 + Node.js |
-| **Database** | PostgreSQL 16 (NeonDB for production) |
+| **Database** | PostgreSQL 16 (Local via Docker Compose) |
 | **Auth** | JWT + bcrypt |
 | **Drag/Drop** | @dnd-kit |
-| **Deployment** | Vercel Functions |
 
 ---
 
@@ -88,12 +91,12 @@ npm run dev
 
 ```
 apps/
-├── api/              # Express backend + AI integration
+├── api/              # Express backend
 │   ├── src/
 │   │   ├── routes/   # API endpoints
-│   │   ├── services/ # Business logic (AI, Auth, etc)
+│   │   ├── services/ # Business logic
 │   │   ├── middleware/ # Auth, rate limiting, logging
-│   │   └── config/   # Database, Redis, Stripe
+│   │   └── config/   # Database, logger
 │   └── package.json
 │
 └── web/              # React frontend
@@ -105,35 +108,6 @@ apps/
     └── package.json
 
 packages/             # Shared types & utilities
-```
-
----
-
-## 🚀 Deployment
-
-### Option 1: Vercel (Recommended - FREE)
-
-**Fastest path to production (30 minutes):**
-
-1. **Read:** [`QUICK_DEPLOY.md`](./QUICK_DEPLOY.md) ← Start here!
-2. **Follow:** Step-by-step deployment checklist
-3. **Deploy:** Click "Deploy" on Vercel
-4. **Live:** Your form builder is now public! 🎉
-
-**Cost:** FREE tier includes:
-- ✅ Unlimited frontend bandwidth
-- ✅ Serverless functions (100GB/month free)
-- ✅ NeonDB PostgreSQL (3GB free)
-- ✅ Custom domain support
-
-**Total Cost:** $0-2/month (if you test AI occasionally)
-
-**See:** [Detailed Free Deployment Guide](./DEPLOY_FREE.md) for advanced setup
-
-### Option 2: Docker
-
-```bash
-docker compose -f infrastructure/docker/docker-compose.prod.yml up
 ```
 
 ---
@@ -157,7 +131,6 @@ docker compose -f infrastructure/docker/docker-compose.prod.yml up
 | `/auth/login` | POST | None | Sign in |
 | `/forms` | GET | ✅ | List forms |
 | `/forms/:id` | GET/PUT/DELETE | ✅ | CRUD operations |
-| `/ai/generate-form` | POST | ✅ | Generate form from prompt |
 | `/payments/intent` | POST | None | Create payment |
 | `/analytics/dashboard` | GET | ✅ | Dashboard stats |
 
@@ -188,10 +161,23 @@ npx kill-port 5173  # Frontend
 npx kill-port 4000  # Backend
 ```
 
-**Database connection failed?**
+**PostgreSQL connection failed?**
 ```bash
-docker compose up -d  # Start PostgreSQL
-psql $DATABASE_URL -c "SELECT 1"  # Test connection
+# Start PostgreSQL
+docker compose up -d
+
+# Verify connection
+docker compose ps
+
+# Check logs
+docker compose logs postgres
+```
+
+**Database doesn't exist?**
+```bash
+# PostgreSQL creates the database automatically when the container starts
+# If needed, connect and create manually:
+docker compose exec postgres psql -U postgres -c "CREATE DATABASE form_builder;"
 ```
 
 **See more issues:** [Troubleshooting Guide](./DOCUMENTATION.md#troubleshooting)
@@ -200,12 +186,12 @@ psql $DATABASE_URL -c "SELECT 1"  # Test connection
 
 ## 📋 Environment Variables
 
-### Required
+### Required (for local development)
 
 ```
 NODE_ENV=development
 PORT=4000
-DATABASE_URL=postgresql://...
+DATABASE_URL=postgresql://postgres:postgres@localhost:5432/form_builder
 JWT_SECRET=<random-32-chars>
 JWT_REFRESH_SECRET=<different-random-32-chars>
 ```
@@ -213,9 +199,7 @@ JWT_REFRESH_SECRET=<different-random-32-chars>
 ### Optional
 
 ```
-STRIPE_SECRET_KEY=sk_test_xxxxx
-STRIPE_WEBHOOK_SECRET=whsec_xxxxx
-ALLOWED_ORIGINS=http://localhost:5173
+ALLOWED_ORIGINS=http://localhost:3000,http://localhost:5173
 ```
 
 **Generate secrets:**
@@ -234,7 +218,6 @@ node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"
 - ✅ Undo/Redo (50 snapshots)
 - ✅ Live form preview
 - ✅ HTML/JSON export
-- ✅ AI form generation UI
 - ✅ Authentication flows
 - ✅ Form dashboard
 - ✅ Submission viewer
@@ -251,9 +234,8 @@ node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"
 - ✅ GDPR compliance
 
 ### DevOps
-- ✅ Vercel Functions ready
-- ✅ NeonDB compatible
 - ✅ Docker support
+- ✅ Local PostgreSQL setup
 - ✅ GitHub Actions CI/CD
 - ✅ Automated tests
 
@@ -262,20 +244,20 @@ node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"
 ## 📞 Getting Help
 
 1. **Documentation:** Read [`DOCUMENTATION.md`](./DOCUMENTATION.md) → Use search (Ctrl+F)
-2. **API Docs:** `http://localhost:4000/api/docs` (Swagger)
+2. **API Docs:** `http://localhost:4000/api/docs` (Swagger) - if available
 3. **Issues:** GitHub Issues
-4. **Discussions:** GitHub Discussions
+4. **Docker Issues:** Check logs with `docker compose logs postgres`
 
 ---
 
-## 🎯 Roadmap
+## 🎯 Local Development Workflow
 
-- ✅ Phase 1: Vercel deployment
-- ✅ Phase 2: Authentication UI
-- ✅ Phase 3: AI form generator
-- 📋 Phase 4: Team collaboration
-- 📋 Phase 5: Advanced analytics
-- 📋 Phase 6: Mobile app
+1. **Start the database:** `docker compose up -d`
+2. **Install dependencies:** `npm install`
+3. **Configure env:** Copy `.env.example` to `.env` (no changes needed for local setup)
+4. **Start dev server:** `npm run dev`
+5. **Open in browser:** `http://localhost:5173`
+6. **Build for production:** `npm run build`
 
 ---
 
@@ -287,18 +269,17 @@ MIT
 
 ## 👥 Contributors
 
-Made by Claude AI | March 30, 2026 | v0.1.0 (Beta)
+Made by Claude AI | March 31, 2026 | v0.1.0 (Beta)
 
 ---
 
 ## 🎉 Quick Links
 
 - 📚 [Full Documentation](./DOCUMENTATION.md)
-- 🚀 [Deploy on Vercel](./DOCUMENTATION.md#phase-1-deployment-on-vercel)
-- 🤖 [AI Setup Guide](./DOCUMENTATION.md#phase-3-ai-form-generator)
-- 🔧 [Environment Variables](./DOCUMENTATION.md#environment-variables)
-- 💬 [Troubleshooting](./DOCUMENTATION.md#troubleshooting)
+- 🐳 [Local Setup with Docker](./README.md#quick-start-local-only)
+- 🔧 [Environment Variables](./README.md#environment-variables)
+- 💬 [Troubleshooting](./README.md#troubleshooting)
 
 ---
 
-**Ready to get started? → [Open DOCUMENTATION.md](./DOCUMENTATION.md)**
+**Ready to get started? Start Docker (`docker compose up -d`) and then run `npm run dev`**

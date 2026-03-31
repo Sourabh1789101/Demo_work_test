@@ -1,8 +1,8 @@
 # 📚 KIM AI Form Builder - Complete Documentation
 
 **Version:** 0.1.0 (Beta)
-**Last Updated:** March 30, 2026
-**Status:** ✅ Production Ready
+**Last Updated:** March 31, 2026
+**Status:** ✅ Local Development Ready
 
 ---
 
@@ -16,32 +16,27 @@
 6. [Environment Variables](#environment-variables)
 7. [Features & Status](#features--status)
 8. [API Endpoints](#api-endpoints)
-9. [Phase 1: Deployment on Vercel](#phase-1-deployment-on-vercel)
-10. [Phase 2: Authentication](#phase-2-authentication)
-11. [Phase 3: AI Form Generator](#phase-3-ai-form-generator)
-12. [Database Schema](#database-schema)
-13. [Deployment Guide](#deployment-guide)
-14. [Cleanup Summary](#cleanup-summary)
-15. [Troubleshooting](#troubleshooting)
+9. [Authentication](#authentication)
+10. [Database Schema](#database-schema)
+11. [Deployment Guide](#deployment-guide)
+12. [Troubleshooting](#troubleshooting)
 
 ---
 
 ## Overview
 
-**KIM AI Form Builder** is an enterprise-grade drag-and-drop form builder with AI-powered form generation, JWT authentication, and Vercel deployment ready.
+**KIM AI Form Builder** is an enterprise-grade drag-and-drop form builder with JWT authentication, designed for local development with Docker and PostgreSQL.
 
 ### Key Capabilities
 
 - 🎯 **Drag-and-drop builder** — Build forms visually with 20+ field types
-- 🤖 **AI Form Generation** — Claude API generates forms from natural language
 - 🔐 **Authentication** — JWT + Login/Signup + Demo mode
 - 💳 **Payments** — Stripe integration
 - 📊 **Submissions** — Collect and analyze form responses
 - 📱 **Responsive** — Desktop, tablet, mobile preview
 - 🌐 **Webhooks** — Zapier, Make.com, n8n integration
 - 📈 **Analytics** — Dashboard analytics & trends
-- 🚀 **Vercel Ready** — Deploy with one click
-- ⏳ **Real-time** — WebSocket collaboration (optional)
+- 🐳 **Docker Ready** — PostgreSQL with Docker Compose
 
 ### Tech Stack
 
@@ -49,9 +44,8 @@
 |-------|-----------|
 | **Frontend** | React 18 + TypeScript + Vite + Tailwind CSS + Zustand |
 | **Backend** | Express 5 + Node.js + PostgreSQL |
-| **AI** | Claude 3.5 Sonnet (Anthropic SDK) |
 | **Auth** | JWT + bcrypt |
-| **Deployment** | Vercel Functions + NeonDB |
+| **Database** | PostgreSQL 16 (Docker) |
 | **State** | Zustand + Immer |
 | **Drag/Drop** | @dnd-kit |
 
@@ -63,20 +57,23 @@
 
 ```bash
 # 1. Clone repository
-git clone https://github.com/your-repo/kim-ai-form-builder.git
-cd kim-ai-form-builder
+git clone https://github.com/Sourabh1789101/Demo_work_test.git
+cd Demo_work_test
 
 # 2. Install dependencies
 npm install
 
-# 3. Setup environment
-cp apps/api/.env.example apps/api/.env
-# Edit apps/api/.env with your config
+# 3. Start PostgreSQL with Docker
+docker compose up -d
 
-# 4. Start development server
+# 4. Setup environment
+cp apps/api/.env.example apps/api/.env
+# The .env file has sensible defaults for local development
+
+# 5. Start development server
 npm run dev
 
-# 5. Open browser
+# 6. Open browser
 # Frontend: http://localhost:5173
 # Backend: http://localhost:4000
 # API Docs: http://localhost:4000/api/docs
