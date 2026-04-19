@@ -145,15 +145,15 @@ export async function generateFormWithAI(req: Request, res: Response): Promise<v
 			// Log audit
 			await AuditService.log({
 				userId,
-				action: 'AI_GENERATE_FORM',
+				action: 'form.create',
 				resourceType: 'form',
 				resourceId: formId,
 				metadata: {
 					prompt: prompt.substring(0, 200),
 					model: result.model,
 					tokensUsed: result.tokensUsed,
+					aiGenerated: true,
 				},
-				req,
 			});
 		}
 

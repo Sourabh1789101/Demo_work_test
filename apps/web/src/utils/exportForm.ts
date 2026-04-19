@@ -23,13 +23,13 @@ const splitIntoPages = (components: FormComponent[]): FormComponent[][] => {
 };
 
 export const exportToHTML = (schema: FormSchema): string => {
-  const isMultiStep = hasPageBreaks(schema.components) || schema.settings.multiStep;
+  const isMultiStep = hasPageBreaks(schema.components) || !!schema.settings.multiStep;
   const pages = isMultiStep ? splitIntoPages(schema.components) : [schema.components];
   
-  const formHTML = isMultiStep 
-    ? generateMultiStepFormHTML(schema, pages)
+  const formHTML = isMultiStep
+    ? generateMultiStepFormHTML(pages)
     : generateFormHTML(schema);
-  const css = generateCSS(isMultiStep, pages.length);
+  const css = generateCSS(isMultiStep);
   const js = isMultiStep 
     ? generateMultiStepJS(schema.title, pages.length)
     : generateJS(schema.title);
@@ -107,7 +107,7 @@ ${js}
 </html>`;
 };
 
-const generateMultiStepFormHTML = (schema: FormSchema, pages: FormComponent[][]): string => {
+const generateMultiStepFormHTML = (pages: FormComponent[][]): string => {
   return pages.map((pageComponents, pageIndex) => {
     const pageHTML = pageComponents.map(component => {
       return generateComponentHTML(component);
@@ -203,7 +203,7 @@ const generateComponentHTML = (component: FormComponent): string => {
 
     case 'select':
       const selectOptions = (component.properties?.options || [])
-        .map((opt: { label: string; value: string }) => 
+        .map((opt) =>
           `                            <option value="${opt.value}">${opt.label}</option>`
         ).join('\n');
       return `                    <div class="form-group">
@@ -220,7 +220,7 @@ ${selectOptions}
       return `                    <div class="form-group checkbox-group">
                         <label class="checkbox-label">
                             <input type="checkbox" name="${fieldName}" value="true" ${requiredAttr}>
-                            <span>${component.properties?.label || component.label}</span>
+                            <span>${component.label}</span>
                         </label>
                         ${component.properties?.helperText ? `<p class="helper-text">${component.properties.helperText}</p>` : ''}
                         <p class="error-message"></p>
@@ -228,7 +228,7 @@ ${selectOptions}
 
     case 'radio':
       const radioOptions = (component.properties?.options || [])
-        .map((opt: { label: string; value: string }) => 
+        .map((opt) =>
           `                            <label class="radio-label">
                                 <input type="radio" name="${fieldName}" value="${opt.value}" ${requiredAttr}>
                                 <span>${opt.label}</span>
@@ -325,7 +325,7 @@ const generateFormHTML = (schema: FormSchema): string => {
     .join('\n\n');
 };
 
-const generateCSS = (isMultiStep: boolean, totalSteps: number): string => {
+const generateCSS = (isMultiStep: boolean): string => {
   const baseCSS = `        * {
             margin: 0;
             padding: 0;

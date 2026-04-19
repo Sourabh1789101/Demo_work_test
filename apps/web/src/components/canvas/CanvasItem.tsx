@@ -3,7 +3,7 @@ import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 import { useBuilderStore } from '../../../modules/store/builderStore';
 import { FormComponent } from '../../../modules/Core/types';
-import { Trash2, Copy, GripVertical, Edit2 } from 'lucide-react';
+import { Trash2, Copy, GripVertical } from 'lucide-react';
 import { componentRegistry } from '../../../lib/componentRegistry';
 
 interface CanvasItemProps {
@@ -154,7 +154,7 @@ const ComponentPreview: React.FC<{
   component: FormComponent;
   definition?: any;
   isSelected?: boolean;
-}> = ({ component, definition, isSelected }) => {
+}> = ({ component, definition }) => {
   const widthClass = {
     full: 'w-full',
     half: 'w-1/2 inline-block pr-4',

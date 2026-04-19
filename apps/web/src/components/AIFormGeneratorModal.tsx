@@ -1,29 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { X, Sparkles, Loader2, AlertCircle, CheckCircle2, Wand2 } from 'lucide-react';
 import { aiFormService } from '../services/aiFormService';
 
 interface AIFormGeneratorModalProps {
   isOpen: boolean;
   onClose: () => void;
-  onFormGenerated: (formData: GeneratedFormData) => void;
-}
-
-interface GeneratedFormData {
-  title: string;
-  description: string;
-  schema: {
-    fields: Array<{
-      id: string;
-      type: string;
-      props: {
-        label: string;
-        placeholder?: string;
-        required?: boolean;
-        options?: Array<{ label: string; value: string }>;
-        validation?: Record<string, unknown>;
-      };
-    }>;
-  };
 }
 
 const EXAMPLE_PROMPTS = [
@@ -34,7 +15,7 @@ const EXAMPLE_PROMPTS = [
   'Create a survey about product satisfaction with multiple choice questions',
 ];
 
-export function AIFormGeneratorModal({ isOpen, onClose, onFormGenerated }: AIFormGeneratorModalProps) {
+export function AIFormGeneratorModal({ isOpen, onClose }: AIFormGeneratorModalProps) {
   const [prompt, setPrompt] = useState('');
   const [isGenerating, setIsGenerating] = useState(false);
   const [error, setError] = useState<string | null>(null);

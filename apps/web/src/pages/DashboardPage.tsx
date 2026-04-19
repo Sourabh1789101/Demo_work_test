@@ -225,13 +225,6 @@ export const DashboardPage: React.FC = () => {
     }
   };
 
-  const handleAIFormGenerated = () => {
-    // Refresh forms list from database
-    void formService.listForms()
-      .then(setForms)
-      .catch(console.error);
-  };
-
   const filtered = forms
     .filter((f) =>
       f.title.toLowerCase().includes(search.toLowerCase()) ||
@@ -254,7 +247,6 @@ export const DashboardPage: React.FC = () => {
       <AIFormGeneratorModal
         isOpen={showAIModal}
         onClose={() => setShowAIModal(false)}
-        onFormGenerated={handleAIFormGenerated}
       />
       {/* Top Nav */}
       <nav className="bg-white border-b border-gray-100 sticky top-0 z-20">

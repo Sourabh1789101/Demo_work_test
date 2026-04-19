@@ -5,7 +5,7 @@ import { useBuilderStore } from '../../../modules/store/builderStore';
 import { CanvasItem } from './CanvasItem';
 import { DeviceFrame } from './Device.Frame';
 import { FormPreview } from '../preview/FormPreview';
-import { MousePointer2, GripVertical, Sparkles } from 'lucide-react';
+import { MousePointer2, Sparkles } from 'lucide-react';
 
 export const Canvas: React.FC = () => {
   const { schema, mode, view, zoom } = useBuilderStore();
