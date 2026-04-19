@@ -291,9 +291,9 @@ export const initDatabase = async (): Promise<void> => {
 
 	try {
 		await client.query('BEGIN');
+		await createUserTables(client);
 		await createBuilderTables(client);
 		await createTemplateCatalogTables(client);
-		await createUserTables(client);
 		await createPaymentTables(client);
 		await client.query('COMMIT');
 	} catch (error) {
@@ -303,6 +303,7 @@ export const initDatabase = async (): Promise<void> => {
 		client.release();
 	}
 
-	await seedTemplateCatalog(false);
+	// Always reseed templates to pick up new additions
+	await seedTemplateCatalog(true);
 };
 

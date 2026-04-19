@@ -3,7 +3,7 @@ import type { Express } from 'express';
 export const swaggerSpec = {
 	openapi: '3.0.0',
 	info: {
-		title: 'KIM AI Form Builder API',
+		title: 'FormBuilder API',
 		version: '0.1.0',
 		description: 'Enterprise Form Builder REST API',
 	},

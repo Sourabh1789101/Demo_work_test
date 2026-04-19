@@ -38,13 +38,14 @@ interface ConditionalRule {
 
 // ── Shared style constants ────────────────────────────────────────────────────
 const inputCls =
-  'w-full px-3 py-1.5 text-sm border border-gray-200 rounded-md bg-white ' +
-  'focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent transition-all';
+  'w-full px-4 py-2.5 text-sm border border-gray-300 rounded-lg bg-white ' +
+  'focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all ' +
+  'placeholder-gray-400 font-medium';
 
 // ── Simple field wrapper ──────────────────────────────────────────────────────
 const Field: React.FC<{ label: string; children: React.ReactNode }> = ({ label, children }) => (
-  <div className="space-y-1">
-    <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wider">
+  <div className="space-y-2">
+    <label className="block text-xs font-bold text-gray-700 uppercase tracking-wide">
       {label}
     </label>
     {children}
@@ -58,10 +59,10 @@ const Toggle: React.FC<{
   label: string;
   description?: string;
 }> = ({ checked, onChange, label, description }) => (
-  <div className="flex items-center justify-between px-3 py-2.5 bg-gray-50 rounded-lg border border-gray-100">
+  <div className="flex items-center justify-between px-4 py-3.5 bg-blue-50 rounded-lg border border-blue-200 hover:border-blue-300 transition-colors">
     <div>
-      <p className="text-xs font-semibold text-gray-700">{label}</p>
-      {description && <p className="text-[10px] text-gray-400 mt-0.5">{description}</p>}
+      <p className="text-sm font-bold text-gray-800">{label}</p>
+      {description && <p className="text-xs text-gray-600 mt-1">{description}</p>}
     </div>
     <button
       type="button"
@@ -69,13 +70,13 @@ const Toggle: React.FC<{
       title={label}
       aria-checked={checked}
       onClick={() => onChange(!checked)}
-      className={`relative inline-flex h-5 w-9 flex-shrink-0 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-1 ${
+      className={`relative inline-flex h-6 w-11 flex-shrink-0 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-1 ${
         checked ? 'bg-blue-600' : 'bg-gray-300'
       }`}
     >
       <span
-        className={`inline-block h-3.5 w-3.5 transform rounded-full bg-white shadow transition-transform ${
-          checked ? 'translate-x-4' : 'translate-x-0.5'
+        className={`inline-block h-4 w-4 transform rounded-full bg-white shadow transition-transform ${
+          checked ? 'translate-x-5.5' : 'translate-x-1'
         }`}
       />
     </button>
@@ -110,26 +111,26 @@ const OptionsEditor: React.FC<{
   const remove = (idx: number) => onChange(options.filter((_, i) => i !== idx));
 
   return (
-    <div className="space-y-2">
-      <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wider">
+    <div className="space-y-3">
+      <label className="block text-xs font-bold text-gray-700 uppercase tracking-wide">
         Options
       </label>
 
-      <div className="space-y-1.5">
+      <div className="space-y-2">
         {options.map((opt, idx) => (
-          <div key={opt.id ?? idx} className="flex items-center gap-2">
-            <span className="w-1.5 h-1.5 bg-gray-300 rounded-full flex-shrink-0" />
+          <div key={opt.id ?? idx} className="flex items-center gap-3">
+            <span className="w-2 h-2 bg-blue-400 rounded-full flex-shrink-0" />
             <input
               type="text"
               value={opt.label}
               onChange={e => update(idx, e.target.value)}
-              className="flex-1 px-2.5 py-1.5 text-xs border border-gray-200 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 bg-white"
+              className="flex-1 px-3 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white font-medium"
               placeholder="Option label"
             />
             <button
               type="button"
               onClick={() => remove(idx)}
-              className="text-gray-300 hover:text-red-400 transition-colors text-lg leading-none flex-shrink-0"
+              className="text-gray-400 hover:text-red-500 transition-colors text-xl leading-none flex-shrink-0 font-bold"
               title="Remove option"
             >
               ×
@@ -141,7 +142,7 @@ const OptionsEditor: React.FC<{
       <button
         type="button"
         onClick={add}
-        className="w-full py-1.5 text-xs text-blue-600 border border-dashed border-blue-300 rounded-md hover:bg-blue-50 transition-colors"
+        className="w-full py-2.5 text-xs font-bold text-blue-600 border-2 border-dashed border-blue-300 rounded-lg hover:bg-blue-50 transition-colors uppercase tracking-wide"
       >
         + Add Option
       </button>
@@ -188,7 +189,7 @@ const BasicProperties: React.FC<{ component: any }> = ({ component }) => {
   const hasOptions = ['select', 'multiselect', 'checkbox', 'radio'].includes(type);
 
   return (
-    <div className="p-4 space-y-4">
+    <div className="p-6 space-y-6">
       {/* Label (not for divider or spacer) */}
       {!['divider', 'spacer'].includes(type) && (
         <Field label="Label">
@@ -812,13 +813,13 @@ const FormSettings: React.FC = () => {
   const { schema, updateSchema, updateSettings } = useBuilderStore();
 
   return (
-    <div className="w-80 bg-white border-l border-gray-200 h-full flex flex-col">
-      <div className="px-4 py-3 border-b border-gray-200 bg-gray-50 flex-shrink-0">
-        <h3 className="font-semibold text-gray-900 text-sm">Form Settings</h3>
-        <p className="text-[11px] text-gray-400 mt-0.5">Global form configuration</p>
+    <div className="w-96 bg-white border-l border-gray-200 h-full flex flex-col shadow-lg">
+      <div className="px-6 py-4 border-b border-gray-100 bg-gradient-to-r from-blue-50 to-indigo-50 flex-shrink-0">
+        <h3 className="font-bold text-gray-900 text-base">Form Settings</h3>
+        <p className="text-xs text-gray-600 mt-1">Configure your form globally</p>
       </div>
 
-      <div className="flex-1 overflow-y-auto p-4 space-y-4">
+      <div className="flex-1 overflow-y-auto p-6 space-y-6">
         <Field label="Form Title">
           <input
             type="text"
@@ -1015,24 +1016,24 @@ export const PropertiesPanel: React.FC = () => {
       : 'bg-blue-100 text-blue-700';
 
   return (
-    <div className="w-80 bg-white border-l border-gray-200 h-full flex flex-col">
+    <div className="w-96 bg-white border-l border-gray-200 h-full flex flex-col shadow-lg">
       {/* Header */}
-      <div className="px-4 py-3 border-b border-gray-200 bg-gray-50 flex-shrink-0">
-        <div className="flex items-center justify-between gap-2">
-          <h3 className="font-semibold text-gray-900 text-sm truncate flex-1">
+      <div className="px-6 py-4 border-b border-gray-100 bg-gradient-to-r from-blue-50 to-indigo-50 flex-shrink-0">
+        <div className="flex items-center justify-between gap-3 mb-2">
+          <h3 className="font-bold text-gray-900 text-base truncate flex-1">
             {component.label}
           </h3>
-          <span className={`text-[10px] px-2 py-0.5 rounded-full font-semibold uppercase flex-shrink-0 ${badgeColor}`}>
+          <span className={`text-xs px-3 py-1 rounded-full font-bold uppercase tracking-wider flex-shrink-0 ${badgeColor}`}>
             {component.type}
           </span>
         </div>
-        <p className="text-[10px] text-gray-400 mt-0.5 font-mono">
-          #{component.id.slice(0, 8)}
+        <p className="text-xs text-gray-600 font-mono">
+          ID: {component.id.slice(0, 8)}
         </p>
       </div>
 
       {/* Tabs */}
-      <div className="flex border-b border-gray-200 flex-shrink-0 bg-white">
+      <div className="flex border-b border-gray-200 flex-shrink-0 bg-white gap-0.5 px-2">
         {tabs.map(tab => (
           <button
             key={tab.id}

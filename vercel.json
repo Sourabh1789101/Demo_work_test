@@ -1,0 +1,142 @@
+{
+  "version": 2,
+  "projectSettings": {
+    "buildCommand": "npm run build",
+    "outputDirectory": "apps/web/dist",
+    "devCommand": "npm run dev",
+    "installCommand": "npm install"
+  },
+  "framework": "vite",
+  "public": false,
+  "github": {
+    "silent": false,
+    "autoAlias": false,
+    "autoJobCancelOnPush": true,
+    "protected": false
+  },
+  "env": [
+    {
+      "key": "VITE_API_BASE_URL",
+      "value": "",
+      "type": "plain",
+      "target": ["preview", "production"]
+    },
+    {
+      "key": "DATABASE_URL",
+      "value": "",
+      "type": "secret",
+      "target": ["production"]
+    },
+    {
+      "key": "JWT_SECRET",
+      "value": "",
+      "type": "secret",
+      "target": ["production"]
+    },
+    {
+      "key": "JWT_REFRESH_SECRET",
+      "value": "",
+      "type": "secret",
+      "target": ["production"]
+    },
+    {
+      "key": "ALLOWED_ORIGINS",
+      "value": "",
+      "type": "plain",
+      "target": ["production"]
+    },
+    {
+      "key": "GEMINI_API_KEY",
+      "value": "",
+      "type": "secret",
+      "target": ["production"]
+    },
+    {
+      "key": "GEMINI_MODEL",
+      "value": "gemini-2.0-flash",
+      "type": "plain",
+      "target": ["production"]
+    },
+    {
+      "key": "STRIPE_SECRET_KEY",
+      "value": "",
+      "type": "secret",
+      "target": ["production"]
+    },
+    {
+      "key": "STRIPE_WEBHOOK_SECRET",
+      "value": "",
+      "type": "secret",
+      "target": ["production"]
+    },
+    {
+      "key": "DPO_EMAIL",
+      "value": "privacy@example.com",
+      "type": "plain",
+      "target": ["production"]
+    }
+  ],
+  "builds": [
+    {
+      "src": "apps/web/package.json",
+      "use": "@vercel/static-build",
+      "config": {
+        "distDir": "dist"
+      }
+    },
+    {
+      "src": "api/index.ts",
+      "use": "@vercel/node"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/api/(.*)",
+      "dest": "/api/index.ts"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/index.html",
+      "status": 200
+    }
+  ],
+  "cleanUrls": true,
+  "trailingSlash": false,
+  "headers": [
+    {
+      "source": "/public/(.*)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=3600, immutable"
+        }
+      ]
+    },
+    {
+      "source": "/data/(.*)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=86400"
+        }
+      ]
+    },
+    {
+      "source": "/(.*)",
+      "headers": [
+        {
+          "key": "X-Content-Type-Options",
+          "value": "nosniff"
+        },
+        {
+          "key": "X-Frame-Options",
+          "value": "DENY"
+        },
+        {
+          "key": "X-XSS-Protection",
+          "value": "1; mode=block"
+        }
+      ]
+    }
+  ]
+}

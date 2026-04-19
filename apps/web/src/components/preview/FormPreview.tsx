@@ -1,12 +1,38 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { useBuilderStore } from '../../../modules/store/builderStore';
 import { FormComponent } from '../../../modules/Core/types';
+import { ChevronLeft, ChevronRight, Check } from 'lucide-react';
 
 export const FormPreview: React.FC = () => {
   const { schema } = useBuilderStore();
   const [formData, setFormData] = useState<Record<string, any>>({});
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [submitted, setSubmitted] = useState(false);
+  const [currentStep, setCurrentStep] = useState(0);
+
+  // Split components into pages based on page-break components
+  const pages = useMemo(() => {
+    const result: FormComponent[][] = [[]];
+    let pageIndex = 0;
+
+    schema.components.forEach(component => {
+      if (component.type === 'page-break') {
+        pageIndex++;
+        result[pageIndex] = [];
+      } else {
+        result[pageIndex].push(component);
+      }
+    });
+
+    // Filter out empty pages
+    return result.filter(page => page.length > 0);
+  }, [schema.components]);
+
+  // Check if form is multi-step (has page-breaks or multiStep setting)
+  const isMultiStep = pages.length > 1 || schema.settings.multiStep;
+  const totalSteps = pages.length;
+  const isLastStep = currentStep === totalSteps - 1;
+  const isFirstStep = currentStep === 0;
 
   const handleChange = (componentId: string, value: any) => {
     setFormData(prev => ({ ...prev, [componentId]: value }));
@@ -20,10 +46,12 @@ export const FormPreview: React.FC = () => {
     }
   };
 
-  const validateForm = (): boolean => {
+  // Validate only current step's components
+  const validateCurrentStep = (): boolean => {
     const newErrors: Record<string, string> = {};
+    const currentComponents = isMultiStep ? pages[currentStep] : schema.components;
     
-    schema.components.forEach(component => {
+    currentComponents.forEach(component => {
       const value = formData[component.id];
       const isRequired = component.validation?.some(v => v.type === 'required');
       
@@ -50,6 +78,53 @@ export const FormPreview: React.FC = () => {
     
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
+  };
+
+  const validateForm = (): boolean => {
+    const newErrors: Record<string, string> = {};
+    
+    schema.components.forEach(component => {
+      if (component.type === 'page-break') return; // Skip page breaks
+      
+      const value = formData[component.id];
+      const isRequired = component.validation?.some(v => v.type === 'required');
+      
+      if (isRequired && (!value || value === '' || (Array.isArray(value) && value.length === 0))) {
+        newErrors[component.id] = `${component.label} is required`;
+      }
+      
+      // Email validation
+      if (component.type === 'email' && value) {
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(value)) {
+          newErrors[component.id] = 'Please enter a valid email address';
+        }
+      }
+      
+      // Phone validation
+      if (component.type === 'phone' && value) {
+        const phoneRegex = /^[\d\s\-\+\(\)]+$/;
+        if (!phoneRegex.test(value)) {
+          newErrors[component.id] = 'Please enter a valid phone number';
+        }
+      }
+    });
+    
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
+  const handleNextStep = () => {
+    if (validateCurrentStep()) {
+      setCurrentStep(prev => Math.min(prev + 1, totalSteps - 1));
+      // Scroll to top of form
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  };
+
+  const handlePrevStep = () => {
+    setCurrentStep(prev => Math.max(prev - 1, 0));
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -583,21 +658,117 @@ export const FormPreview: React.FC = () => {
 
       {/* Form Body */}
       <form onSubmit={handleSubmit} className="space-y-1">
-        {schema.components.map(component => (
-          <div key={component.id}>
-            {renderComponent(component)}
+        {/* Step Progress Indicator for Multi-Step Forms */}
+        {isMultiStep && totalSteps > 1 && (
+          <div className="mb-8">
+            {/* Progress Bar */}
+            <div className="flex items-center justify-between mb-4">
+              {Array.from({ length: totalSteps }).map((_, index) => (
+                <React.Fragment key={index}>
+                  {/* Step Circle */}
+                  <div className="flex flex-col items-center">
+                    <div
+                      className={`w-10 h-10 rounded-full flex items-center justify-center font-semibold text-sm transition-all duration-300 ${
+                        index < currentStep
+                          ? 'bg-green-500 text-white'
+                          : index === currentStep
+                          ? 'bg-blue-600 text-white ring-4 ring-blue-200'
+                          : 'bg-gray-200 text-gray-500'
+                      }`}
+                    >
+                      {index < currentStep ? (
+                        <Check size={18} />
+                      ) : (
+                        index + 1
+                      )}
+                    </div>
+                    <span className={`mt-2 text-xs font-medium ${
+                      index <= currentStep ? 'text-blue-600' : 'text-gray-400'
+                    }`}>
+                      Step {index + 1}
+                    </span>
+                  </div>
+                  
+                  {/* Connector Line */}
+                  {index < totalSteps - 1 && (
+                    <div className="flex-1 mx-2">
+                      <div
+                        className={`h-1 rounded-full transition-all duration-300 ${
+                          index < currentStep ? 'bg-green-500' : 'bg-gray-200'
+                        }`}
+                      />
+                    </div>
+                  )}
+                </React.Fragment>
+              ))}
+            </div>
+            
+            {/* Step Counter Text */}
+            <div className="text-center text-sm text-gray-500">
+              Step {currentStep + 1} of {totalSteps}
+            </div>
           </div>
-        ))}
+        )}
 
-        {/* Submit Button */}
+        {/* Render Current Page Components (multi-step) or All Components (single-page) */}
+        {isMultiStep ? (
+          pages[currentStep]?.map(component => (
+            <div key={component.id}>
+              {renderComponent(component)}
+            </div>
+          ))
+        ) : (
+          schema.components.map(component => (
+            <div key={component.id}>
+              {renderComponent(component)}
+            </div>
+          ))
+        )}
+
+        {/* Navigation Buttons */}
         {schema.components.length > 0 && (
           <div className="pt-6 mt-8 border-t-2 border-gray-100">
-            <button
-              type="submit"
-              className="w-full bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white font-semibold py-4 px-8 rounded-xl shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-200 focus:outline-none focus:ring-4 focus:ring-blue-300"
-            >
-              {schema.settings.submitButtonText || 'Submit'}
-            </button>
+            {isMultiStep ? (
+              <div className="flex gap-4">
+                {/* Previous Button */}
+                {!isFirstStep && (
+                  <button
+                    type="button"
+                    onClick={handlePrevStep}
+                    className="flex-1 flex items-center justify-center gap-2 bg-gray-100 hover:bg-gray-200 text-gray-700 font-semibold py-4 px-8 rounded-xl transition-all duration-200 focus:outline-none focus:ring-4 focus:ring-gray-300"
+                  >
+                    <ChevronLeft size={20} />
+                    Previous
+                  </button>
+                )}
+                
+                {/* Next / Submit Button */}
+                {isLastStep ? (
+                  <button
+                    type="submit"
+                    className="flex-1 bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white font-semibold py-4 px-8 rounded-xl shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-200 focus:outline-none focus:ring-4 focus:ring-green-300"
+                  >
+                    {schema.settings.submitButtonText || 'Submit'}
+                  </button>
+                ) : (
+                  <button
+                    type="button"
+                    onClick={handleNextStep}
+                    className="flex-1 flex items-center justify-center gap-2 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white font-semibold py-4 px-8 rounded-xl shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-200 focus:outline-none focus:ring-4 focus:ring-blue-300"
+                  >
+                    Next
+                    <ChevronRight size={20} />
+                  </button>
+                )}
+              </div>
+            ) : (
+              <button
+                type="submit"
+                className="w-full bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white font-semibold py-4 px-8 rounded-xl shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-200 focus:outline-none focus:ring-4 focus:ring-blue-300"
+              >
+                {schema.settings.submitButtonText || 'Submit'}
+              </button>
+            )}
           </div>
         )}
       </form>

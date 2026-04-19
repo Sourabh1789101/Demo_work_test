@@ -346,7 +346,7 @@ export const PublicFormPage: React.FC = () => {
           <div className="w-5 h-5 bg-gradient-to-br from-violet-600 to-indigo-600 rounded flex items-center justify-center">
             <Zap size={10} className="text-white" />
           </div>
-          Powered by KIM AI
+          Powered by FormBuilder
         </Link>
       </div>
 

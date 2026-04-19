@@ -1,6 +1,8 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider } from './src/contexts/AuthContext';
 import { ProtectedRoute } from './src/components/ProtectedRoute';
+import { RootPage } from './src/pages/RootPage';
+import { LandingPage } from './src/pages/LandingPage';
 import { DashboardPage } from './src/pages/DashboardPage';
 import { BuilderPage } from './src/pages/BuilderPage';
 import { PublicFormPage } from './src/pages/PublicFormPage';
@@ -16,6 +18,7 @@ export default function App() {
       <BrowserRouter>
         <Routes>
           {/* Public Routes */}
+          <Route path="/landing" element={<LandingPage />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/signup" element={<SignupPage />} />
           <Route path="/demo" element={<DemoPage />} />
@@ -23,7 +26,7 @@ export default function App() {
 
           {/* Protected Routes */}
           <Route
-            path="/"
+            path="/dashboard"
             element={
               <ProtectedRoute>
                 <DashboardPage />
@@ -63,7 +66,8 @@ export default function App() {
             }
           />
 
-          {/* Catch-all */}
+          {/* Catch-all and Root */}
+          <Route path="/" element={<RootPage />} />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </BrowserRouter>

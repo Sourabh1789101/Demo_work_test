@@ -1,0 +1,130 @@
+{
+  "categories": [
+    {
+      "id": "job-application-forms",
+      "name": "Job Application Forms",
+      "description": "Professional templates for hiring and recruitment workflows.",
+      "icon": "💼",
+      "color": "#2C3E50"
+    },
+    {
+      "id": "event-registration-forms",
+      "name": "Event Registration Forms",
+      "description": "Collect attendee information for conferences, parties, and workshops.",
+      "icon": "🎉",
+      "color": "#1ABC9C"
+    },
+    {
+      "id": "feedback-forms",
+      "name": "Feedback Forms",
+      "description": "Gather ratings, reviews, and improvement insights from customers.",
+      "icon": "⭐",
+      "color": "#F1C40F"
+    },
+    {
+      "id": "medical-forms",
+      "name": "Medical Forms",
+      "description": "Secure patient intake, consent, and health screening forms.",
+      "icon": "⚕️",
+      "color": "#3498DB"
+    },
+    {
+      "id": "contact-forms",
+      "name": "Contact Forms",
+      "description": "Simple and professional forms to capture leads and enquiries.",
+      "icon": "✉️",
+      "color": "#2563EB"
+    },
+    {
+      "id": "education-forms",
+      "name": "Education Forms",
+      "description": "Enrollment, course registration, and student assessment forms.",
+      "icon": "🎓",
+      "color": "#1D4ED8"
+    },
+    {
+      "id": "ecommerce-order-forms",
+      "name": "E-Commerce & Order Forms",
+      "description": "Product ordering, pre-order, and custom request forms.",
+      "icon": "🛍️",
+      "color": "#E11D48"
+    },
+    {
+      "id": "survey-forms",
+      "name": "Survey Forms",
+      "description": "Market research, opinion polls, and data collection surveys.",
+      "icon": "📊",
+      "color": "#475569"
+    },
+    {
+      "id": "appointment-booking-forms",
+      "name": "Appointment & Booking Forms",
+      "description": "Schedule consultations, services, and appointments online.",
+      "icon": "📅",
+      "color": "#0D9488"
+    },
+    {
+      "id": "newsletter-subscription-forms",
+      "name": "Newsletter & Subscription Forms",
+      "description": "Grow your email list and capture subscriber preferences.",
+      "icon": "📧",
+      "color": "#4F46E5"
+    },
+    {
+      "id": "volunteer-donation-forms",
+      "name": "Volunteer & Donation Forms",
+      "description": "Recruit volunteers and collect donor information for nonprofits.",
+      "icon": "❤️",
+      "color": "#16A34A"
+    },
+    {
+      "id": "legal-compliance-forms",
+      "name": "Legal & Compliance Forms",
+      "description": "Consent forms, waivers, and compliance documentation.",
+      "icon": "⚖️",
+      "color": "#1E293B"
+    },
+    {
+      "id": "fitness-wellness-forms",
+      "name": "Fitness & Wellness Forms",
+      "description": "Gym memberships, fitness assessments, and wellness tracking forms.",
+      "icon": "💪",
+      "color": "#DC2626"
+    },
+    {
+      "id": "restaurant-food-forms",
+      "name": "Restaurant & Food Service Forms",
+      "description": "Reservations, catering requests, and food order forms.",
+      "icon": "🍽️",
+      "color": "#78350F"
+    },
+    {
+      "id": "real-estate-forms",
+      "name": "Real Estate Forms",
+      "description": "Property inquiries, rental applications, and buyer questionnaires.",
+      "icon": "🏠",
+      "color": "#1E40AF"
+    },
+    {
+      "id": "travel-hospitality-forms",
+      "name": "Travel & Hospitality Forms",
+      "description": "Travel bookings, hotel feedback, and trip planning forms.",
+      "icon": "✈️",
+      "color": "#0369A1"
+    },
+    {
+      "id": "creative-portfolio-forms",
+      "name": "Creative & Portfolio Forms",
+      "description": "Creative project requests, portfolio submissions, and artist applications.",
+      "icon": "🎨",
+      "color": "#EC4899"
+    },
+    {
+      "id": "pet-animal-forms",
+      "name": "Pet & Animal Services Forms",
+      "description": "Pet registrations, veterinary intake, and pet sitting requests.",
+      "icon": "🐾",
+      "color": "#EA580C"
+    }
+  ]
+}

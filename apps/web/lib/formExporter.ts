@@ -111,7 +111,7 @@ export const exportFormToHTML = (formTitle: string, components: FormComponentIns
             <h1 class="text-3xl font-bold text-gray-900 text-center">${formTitle}</h1>
         </div>
         
-        <form id="kim-ai-exported-form" class="px-8 py-8">
+        <form id="formbuilder-exported-form" class="px-8 py-8">
             ${formFieldsHTML}
             
             <div class="mt-8 pt-6 border-t border-gray-200">
@@ -123,7 +123,7 @@ export const exportFormToHTML = (formTitle: string, components: FormComponentIns
     </div>
 
     <script>
-        document.getElementById('kim-ai-exported-form').addEventListener('submit', function(e) {
+        document.getElementById('formbuilder-exported-form').addEventListener('submit', function(e) {
             e.preventDefault();
             
             const form = e.target;

@@ -24,7 +24,7 @@ export class EmailService {
   }
 
   static async send(options: EmailOptions): Promise<{ success: boolean; messageId?: string }> {
-    const messageId = `<${randomUUID()}@kim-ai>`;
+    const messageId = `<${randomUUID()}@formbuilder>`;
 
     // Always log so we never silently drop emails
     console.log(
@@ -75,13 +75,13 @@ export class EmailService {
   static async sendWelcomeEmail(name: string, email: string): Promise<void> {
     await EmailService.send({
       to: email,
-      subject: 'Welcome to KIM AI Form Builder',
+      subject: 'Welcome to FormBuilder',
       html: `
         <h1>Welcome, ${escapeHtml(name)}!</h1>
-        <p>Your KIM AI Form Builder account is ready. Start building beautiful forms today.</p>
+        <p>Your FormBuilder account is ready. Start building beautiful forms today.</p>
         <p><a href="${process.env['APP_URL'] ?? 'https://kimai.app'}">Open Form Builder →</a></p>
       `,
-      text: `Welcome, ${name}! Your KIM AI Form Builder account is ready.`,
+      text: `Welcome, ${name}! Your FormBuilder account is ready.`,
     });
   }
 

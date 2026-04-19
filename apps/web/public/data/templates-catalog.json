@@ -1,0 +1,726 @@
+{
+  "templates": [
+    {
+      "id": "tpl_job_001",
+      "name": "Software Developer Application",
+      "description": "A professional form for tech recruits with portfolio and experience fields.",
+      "category": "job-application-forms",
+      "design": {
+        "theme": "Modern Professional",
+        "primaryColor": "#2C3E50",
+        "secondaryColor": "#ECF0F1",
+        "fontFamily": "Roboto, sans-serif",
+        "layout": "Single Column",
+        "backgroundType": "Solid Color"
+      },
+      "fields": [
+        {"type": "text", "label": "Full Name", "placeholder": "John Doe", "required": true},
+        {"type": "email", "label": "Email Address", "placeholder": "john@example.com", "required": true},
+        {"type": "tel", "label": "Phone Number", "placeholder": "+1 (000) 000-0000", "required": true},
+        {"type": "file_upload", "label": "Upload Resume (PDF)", "required": true},
+        {"type": "url", "label": "Portfolio / GitHub Link", "required": false},
+        {"type": "dropdown", "label": "Experience Level", "options": ["Junior (0-2 yrs)", "Mid (3-5 yrs)", "Senior (5+ yrs)", "Lead / Principal"], "required": true},
+        {"type": "checkbox_group", "label": "Tech Stack", "options": ["React", "Vue", "Angular", "Node.js", "Python", "Go", "Rust"]},
+        {"type": "long_text", "label": "Why do you want to join us?", "required": true},
+        {"type": "date", "label": "Earliest Start Date", "required": false}
+      ]
+    },
+    {
+      "id": "tpl_job_002",
+      "name": "Retail Staff Application",
+      "description": "A simple, mobile-friendly form for retail and customer-facing positions.",
+      "category": "job-application-forms",
+      "design": {
+        "theme": "Clean Minimalist",
+        "primaryColor": "#3498DB",
+        "secondaryColor": "#FFFFFF",
+        "fontFamily": "Arial, sans-serif",
+        "layout": "Card Layout",
+        "backgroundType": "Light Gradient"
+      },
+      "fields": [
+        {"type": "text", "label": "First Name", "required": true},
+        {"type": "text", "label": "Last Name", "required": true},
+        {"type": "email", "label": "Email Address", "required": true},
+        {"type": "tel", "label": "Phone Number", "required": true},
+        {"type": "availability", "label": "Available Shifts", "options": ["Morning", "Afternoon", "Evening", "Night", "Weekends"], "required": true},
+        {"type": "date", "label": "Earliest Start Date", "required": true},
+        {"type": "long_text", "label": "Previous Work Experience", "placeholder": "Briefly describe your relevant experience", "required": false}
+      ]
+    },
+    {
+      "id": "tpl_job_003",
+      "name": "Marketing Specialist Application",
+      "description": "Targeted form for marketing roles with campaign and strategy experience.",
+      "category": "job-application-forms",
+      "design": {
+        "theme": "Creative Vibrant",
+        "primaryColor": "#E74C3C",
+        "secondaryColor": "#FDEDEC",
+        "fontFamily": "Montserrat, sans-serif",
+        "layout": "Two Column",
+        "backgroundType": "Light Gradient"
+      },
+      "fields": [
+        {"type": "text", "label": "Full Name", "required": true},
+        {"type": "email", "label": "Email Address", "required": true},
+        {"type": "url", "label": "LinkedIn Profile", "required": false},
+        {"type": "dropdown", "label": "Marketing Specialisation", "options": ["Content Marketing", "SEO / SEM", "Social Media", "Email Marketing", "Paid Ads", "Brand Strategy"], "required": true},
+        {"type": "number", "label": "Years of Experience", "required": true},
+        {"type": "long_text", "label": "Describe a successful campaign you led", "required": true},
+        {"type": "file_upload", "label": "Upload Portfolio / CV", "required": true}
+      ]
+    },
+    {
+      "id": "tpl_evt_001",
+      "name": "Corporate Conference Signup",
+      "description": "Elegant design for business conferences with ticket selection.",
+      "category": "event-registration-forms",
+      "design": {
+        "theme": "Corporate Elegant",
+        "primaryColor": "#1ABC9C",
+        "secondaryColor": "#E8F8F5",
+        "fontFamily": "Helvetica, sans-serif",
+        "layout": "Two Column",
+        "backgroundImage": "https://placehold.co/1920x1080/1abc9c/ffffff?text=Conference"
+      },
+      "fields": [
+        {"type": "text", "label": "Company Name", "required": true},
+        {"type": "text", "label": "Attendee Name", "required": true},
+        {"type": "email", "label": "Work Email", "required": true},
+        {"type": "tel", "label": "Phone Number", "required": false},
+        {"type": "dropdown", "label": "Ticket Type", "options": ["Standard", "VIP", "Group Pass (5+)", "Student"], "required": true},
+        {"type": "dropdown", "label": "Industry", "options": ["Technology", "Finance", "Healthcare", "Education", "Retail", "Other"], "required": false},
+        {"type": "payment", "label": "Registration Fee", "price": "$250.00"}
+      ]
+    },
+    {
+      "id": "tpl_evt_002",
+      "name": "Birthday Party RSVP",
+      "description": "Fun and colorful RSVP for personal celebrations and parties.",
+      "category": "event-registration-forms",
+      "design": {
+        "theme": "Fun Festive",
+        "primaryColor": "#E74C3C",
+        "secondaryColor": "#FDEDEC",
+        "fontFamily": "Comic Sans MS, cursive",
+        "layout": "Single Column",
+        "backgroundType": "Confetti Pattern"
+      },
+      "fields": [
+        {"type": "text", "label": "Your Name", "required": true},
+        {"type": "radio", "label": "Will you attend?", "options": ["Yes, excited!", "Sorry, can't make it", "Maybe, I'll confirm later"], "required": true},
+        {"type": "number", "label": "Number of Guests", "required": false},
+        {"type": "dropdown", "label": "Dietary Preference", "options": ["No Preference", "Vegetarian", "Vegan", "Gluten-Free", "Halal"], "required": false},
+        {"type": "long_text", "label": "Message for the Birthday Person", "required": false}
+      ]
+    },
+    {
+      "id": "tpl_evt_003",
+      "name": "Workshop / Webinar Registration",
+      "description": "Capture registrations for online or in-person workshops and webinars.",
+      "category": "event-registration-forms",
+      "design": {
+        "theme": "Education Blue",
+        "primaryColor": "#2980B9",
+        "secondaryColor": "#EBF5FB",
+        "fontFamily": "Open Sans, sans-serif",
+        "layout": "Single Column",
+        "backgroundType": "Light Gradient"
+      },
+      "fields": [
+        {"type": "text", "label": "Full Name", "required": true},
+        {"type": "email", "label": "Email Address", "placeholder": "Confirmation will be sent here", "required": true},
+        {"type": "text", "label": "Job Title / Role", "required": false},
+        {"type": "dropdown", "label": "Session", "options": ["Morning Session (9am–12pm)", "Afternoon Session (2pm–5pm)", "Full Day"], "required": true},
+        {"type": "radio", "label": "Format", "options": ["In-Person", "Online (Virtual)", "Either"], "required": true},
+        {"type": "long_text", "label": "What do you hope to learn?", "required": false}
+      ]
+    },
+    {
+      "id": "tpl_fdb_001",
+      "name": "Product Review Form",
+      "description": "Focused on star ratings and detailed product experience.",
+      "category": "feedback-forms",
+      "design": {
+        "theme": "Minimalist UI",
+        "primaryColor": "#F1C40F",
+        "secondaryColor": "#FEFEFE",
+        "fontFamily": "Lato, sans-serif",
+        "layout": "Card Layout",
+        "backgroundType": "White"
+      },
+      "fields": [
+        {"type": "rating", "label": "Overall Satisfaction", "scale": "5 Stars", "required": true},
+        {"type": "rating", "label": "Product Quality", "scale": "5 Stars", "required": true},
+        {"type": "rating", "label": "Value for Money", "scale": "5 Stars", "required": true},
+        {"type": "text", "label": "Product Name / Model", "required": true},
+        {"type": "long_text", "label": "What did you like or dislike?", "required": true},
+        {"type": "radio", "label": "Would you buy again?", "options": ["Yes", "No", "Maybe"], "required": false},
+        {"type": "file_upload", "label": "Upload Product Photo (Optional)", "required": false}
+      ]
+    },
+    {
+      "id": "tpl_fdb_002",
+      "name": "Service Quality Survey",
+      "description": "Measure customer satisfaction across key service touchpoints.",
+      "category": "feedback-forms",
+      "design": {
+        "theme": "Corporate Clean",
+        "primaryColor": "#27AE60",
+        "secondaryColor": "#EAFAF1",
+        "fontFamily": "Roboto, sans-serif",
+        "layout": "Single Column",
+        "backgroundType": "Light Gradient"
+      },
+      "fields": [
+        {"type": "text", "label": "Your Name", "required": false},
+        {"type": "email", "label": "Email Address", "required": false},
+        {"type": "dropdown", "label": "Service Used", "options": ["Customer Support", "Installation", "Maintenance", "Consulting", "Delivery"], "required": true},
+        {"type": "rating", "label": "Speed of Service", "scale": "5 Stars", "required": true},
+        {"type": "rating", "label": "Friendliness of Staff", "scale": "5 Stars", "required": true},
+        {"type": "rating", "label": "Problem Resolution", "scale": "5 Stars", "required": true},
+        {"type": "radio", "label": "Would you recommend us?", "options": ["Definitely", "Probably", "Not Sure", "No"], "required": true},
+        {"type": "long_text", "label": "Additional Comments", "required": false}
+      ]
+    },
+    {
+      "id": "tpl_fdb_003",
+      "name": "Employee Satisfaction Survey",
+      "description": "Anonymous internal survey to gauge team morale and engagement.",
+      "category": "feedback-forms",
+      "design": {
+        "theme": "Professional Blue",
+        "primaryColor": "#2980B9",
+        "secondaryColor": "#EBF5FB",
+        "fontFamily": "Arial, sans-serif",
+        "layout": "Single Column",
+        "backgroundType": "Solid Color"
+      },
+      "fields": [
+        {"type": "dropdown", "label": "Department", "options": ["Engineering", "Marketing", "Sales", "HR", "Finance", "Operations"], "required": true},
+        {"type": "rating", "label": "Overall Job Satisfaction", "scale": "5 Stars", "required": true},
+        {"type": "rating", "label": "Work-Life Balance", "scale": "5 Stars", "required": true},
+        {"type": "rating", "label": "Management Support", "scale": "5 Stars", "required": true},
+        {"type": "rating", "label": "Career Growth Opportunities", "scale": "5 Stars", "required": true},
+        {"type": "radio", "label": "Do you see yourself here in 2 years?", "options": ["Yes", "No", "Unsure"], "required": true},
+        {"type": "long_text", "label": "What could we improve?", "required": false},
+        {"type": "long_text", "label": "What do you appreciate most?", "required": false}
+      ]
+    },
+    {
+      "id": "tpl_med_001",
+      "name": "Patient Intake Form",
+      "description": "Soothing colors with a HIPAA-friendly layout for new patient intake.",
+      "category": "medical-forms",
+      "design": {
+        "theme": "Medical Clinical",
+        "primaryColor": "#3498DB",
+        "secondaryColor": "#EBF5FB",
+        "fontFamily": "Open Sans, sans-serif",
+        "layout": "Single Column (Large Inputs)",
+        "backgroundType": "Light Blue Tint"
+      },
+      "fields": [
+        {"type": "text", "label": "Patient Full Name", "required": true},
+        {"type": "date", "label": "Date of Birth", "required": true},
+        {"type": "radio", "label": "Gender", "options": ["Male", "Female", "Non-Binary", "Prefer not to say"], "required": false},
+        {"type": "tel", "label": "Contact Number", "required": true},
+        {"type": "email", "label": "Email Address", "required": false},
+        {"type": "text", "label": "Emergency Contact Name", "required": true},
+        {"type": "tel", "label": "Emergency Contact Phone", "required": true},
+        {"type": "text", "label": "Insurance Provider", "required": false},
+        {"type": "text", "label": "Insurance Policy Number", "required": false},
+        {"type": "checkbox_group", "label": "Current Medications", "options": ["None", "Aspirin", "Ibuprofen", "Metformin", "Blood Pressure Meds", "Other"]},
+        {"type": "checkbox_group", "label": "Known Allergies", "options": ["None", "Penicillin", "Aspirin", "Latex", "Nuts", "Other"]},
+        {"type": "long_text", "label": "Reason for Visit", "required": true},
+        {"type": "signature", "label": "Patient Digital Signature", "required": true}
+      ]
+    },
+    {
+      "id": "tpl_med_002",
+      "name": "Health Screening Questionnaire",
+      "description": "Pre-appointment health screening to identify risk factors.",
+      "category": "medical-forms",
+      "design": {
+        "theme": "Health Green",
+        "primaryColor": "#27AE60",
+        "secondaryColor": "#EAFAF1",
+        "fontFamily": "Open Sans, sans-serif",
+        "layout": "Single Column",
+        "backgroundType": "Light Gradient"
+      },
+      "fields": [
+        {"type": "text", "label": "Full Name", "required": true},
+        {"type": "date", "label": "Date of Birth", "required": true},
+        {"type": "number", "label": "Height (cm)", "required": false},
+        {"type": "number", "label": "Weight (kg)", "required": false},
+        {"type": "radio", "label": "Do you smoke?", "options": ["Yes", "No", "Former Smoker"], "required": true},
+        {"type": "radio", "label": "Do you exercise regularly?", "options": ["Daily", "A few times a week", "Rarely", "Never"], "required": true},
+        {"type": "checkbox_group", "label": "Pre-existing Conditions", "options": ["Diabetes", "Hypertension", "Asthma", "Heart Disease", "Arthritis", "None"]},
+        {"type": "long_text", "label": "Any additional health concerns?", "required": false}
+      ]
+    },
+    {
+      "id": "tpl_con_001",
+      "name": "General Contact Form",
+      "description": "Clean, minimal contact form suitable for any website.",
+      "category": "contact-forms",
+      "design": {
+        "theme": "Clean Blue",
+        "primaryColor": "#2563EB",
+        "secondaryColor": "#EFF6FF",
+        "fontFamily": "Inter, sans-serif",
+        "layout": "Single Column",
+        "backgroundType": "White"
+      },
+      "fields": [
+        {"type": "text", "label": "Full Name", "placeholder": "Your name", "required": true},
+        {"type": "email", "label": "Email Address", "placeholder": "you@example.com", "required": true},
+        {"type": "tel", "label": "Phone Number", "placeholder": "+1 (000) 000-0000", "required": false},
+        {"type": "dropdown", "label": "Subject", "options": ["General Enquiry", "Technical Support", "Sales", "Billing", "Partnership", "Other"], "required": true},
+        {"type": "long_text", "label": "Message", "placeholder": "How can we help you?", "required": true}
+      ]
+    },
+    {
+      "id": "tpl_con_002",
+      "name": "Business Enquiry Form",
+      "description": "Lead generation form capturing company and project details.",
+      "category": "contact-forms",
+      "design": {
+        "theme": "Business Dark",
+        "primaryColor": "#1E293B",
+        "secondaryColor": "#F8FAFC",
+        "fontFamily": "Roboto, sans-serif",
+        "layout": "Two Column",
+        "backgroundType": "Light Gradient"
+      },
+      "fields": [
+        {"type": "text", "label": "First Name", "required": true},
+        {"type": "text", "label": "Last Name", "required": true},
+        {"type": "email", "label": "Work Email", "required": true},
+        {"type": "text", "label": "Company Name", "required": true},
+        {"type": "text", "label": "Job Title", "required": false},
+        {"type": "dropdown", "label": "Company Size", "options": ["1–10", "11–50", "51–200", "201–500", "500+"], "required": false},
+        {"type": "dropdown", "label": "Budget Range", "options": ["< $5K", "$5K–$20K", "$20K–$100K", "$100K+", "Not Sure"], "required": false},
+        {"type": "long_text", "label": "Project Description", "placeholder": "Tell us about your project or requirements", "required": true}
+      ]
+    },
+    {
+      "id": "tpl_con_003",
+      "name": "Support Ticket Form",
+      "description": "Help desk support request form with priority and issue type.",
+      "category": "contact-forms",
+      "design": {
+        "theme": "Support Orange",
+        "primaryColor": "#F97316",
+        "secondaryColor": "#FFF7ED",
+        "fontFamily": "Inter, sans-serif",
+        "layout": "Single Column",
+        "backgroundType": "White"
+      },
+      "fields": [
+        {"type": "text", "label": "Full Name", "required": true},
+        {"type": "email", "label": "Email Address", "required": true},
+        {"type": "dropdown", "label": "Issue Category", "options": ["Account Access", "Billing", "Technical Bug", "Feature Request", "Performance", "Other"], "required": true},
+        {"type": "radio", "label": "Priority", "options": ["Low", "Medium", "High", "Critical"], "required": true},
+        {"type": "text", "label": "Subject", "placeholder": "Brief summary of the issue", "required": true},
+        {"type": "long_text", "label": "Description", "placeholder": "Please provide as much detail as possible", "required": true},
+        {"type": "file_upload", "label": "Attach Screenshot / File", "required": false}
+      ]
+    },
+    {
+      "id": "tpl_edu_001",
+      "name": "Course Enrollment Form",
+      "description": "Register students for classes with course and payment details.",
+      "category": "education-forms",
+      "design": {
+        "theme": "Academic Blue",
+        "primaryColor": "#1D4ED8",
+        "secondaryColor": "#EFF6FF",
+        "fontFamily": "Georgia, serif",
+        "layout": "Single Column",
+        "backgroundType": "Light Blue Tint"
+      },
+      "fields": [
+        {"type": "text", "label": "Student's Full Name", "required": true},
+        {"type": "date", "label": "Date of Birth", "required": true},
+        {"type": "email", "label": "Email Address", "required": true},
+        {"type": "tel", "label": "Phone Number", "required": true},
+        {"type": "text", "label": "Parent / Guardian Name", "required": false},
+        {"type": "dropdown", "label": "Course", "options": ["Introduction to Programming", "Data Science Fundamentals", "Web Development Bootcamp", "Digital Marketing", "Business Analytics"], "required": true},
+        {"type": "dropdown", "label": "Schedule", "options": ["Weekday Morning", "Weekday Evening", "Weekend"], "required": true},
+        {"type": "radio", "label": "Learning Mode", "options": ["In-Person", "Online", "Hybrid"], "required": true},
+        {"type": "payment", "label": "Enrollment Fee", "price": "$499.00"},
+        {"type": "signature", "label": "Student / Guardian Signature", "required": true}
+      ]
+    },
+    {
+      "id": "tpl_edu_002",
+      "name": "Student Feedback Form",
+      "description": "Collect students' opinions on course quality and instructor effectiveness.",
+      "category": "education-forms",
+      "design": {
+        "theme": "Campus Green",
+        "primaryColor": "#15803D",
+        "secondaryColor": "#F0FDF4",
+        "fontFamily": "Open Sans, sans-serif",
+        "layout": "Card Layout",
+        "backgroundType": "White"
+      },
+      "fields": [
+        {"type": "dropdown", "label": "Course Name", "options": ["Math 101", "English Literature", "Physics 201", "History 101", "Computer Science"], "required": true},
+        {"type": "text", "label": "Instructor Name", "required": false},
+        {"type": "rating", "label": "Course Content Quality", "scale": "5 Stars", "required": true},
+        {"type": "rating", "label": "Instructor Effectiveness", "scale": "5 Stars", "required": true},
+        {"type": "rating", "label": "Overall Experience", "scale": "5 Stars", "required": true},
+        {"type": "radio", "label": "Would you recommend this course?", "options": ["Definitely", "Probably", "Not sure", "No"], "required": true},
+        {"type": "long_text", "label": "What could be improved?", "required": false},
+        {"type": "long_text", "label": "Best part of the course?", "required": false}
+      ]
+    },
+    {
+      "id": "tpl_eco_001",
+      "name": "Product Order Form",
+      "description": "Simple product order form with product selection and shipping details.",
+      "category": "ecommerce-order-forms",
+      "design": {
+        "theme": "Commerce Coral",
+        "primaryColor": "#E11D48",
+        "secondaryColor": "#FFF1F2",
+        "fontFamily": "Inter, sans-serif",
+        "layout": "Single Column",
+        "backgroundType": "White"
+      },
+      "fields": [
+        {"type": "text", "label": "Customer Full Name", "required": true},
+        {"type": "email", "label": "Email Address", "required": true},
+        {"type": "tel", "label": "Phone Number", "required": true},
+        {"type": "dropdown", "label": "Product", "options": ["Classic T-Shirt — $25", "Premium Hoodie — $59", "Canvas Tote Bag — $15", "Water Bottle — $20", "Custom Mug — $12"], "required": true},
+        {"type": "dropdown", "label": "Size", "options": ["XS", "S", "M", "L", "XL", "XXL", "N/A"], "required": false},
+        {"type": "number", "label": "Quantity", "required": true},
+        {"type": "long_text", "label": "Shipping Address", "placeholder": "Street, City, State, ZIP, Country", "required": true},
+        {"type": "long_text", "label": "Special Instructions", "required": false}
+      ]
+    },
+    {
+      "id": "tpl_sur_001",
+      "name": "Market Research Survey",
+      "description": "Gather consumer insights with demographic and preference questions.",
+      "category": "survey-forms",
+      "design": {
+        "theme": "Research Neutral",
+        "primaryColor": "#475569",
+        "secondaryColor": "#F8FAFC",
+        "fontFamily": "Roboto, sans-serif",
+        "layout": "Single Column",
+        "backgroundType": "White"
+      },
+      "fields": [
+        {"type": "dropdown", "label": "Age Range", "options": ["Under 18", "18–24", "25–34", "35–44", "45–54", "55–64", "65+"], "required": true},
+        {"type": "radio", "label": "Gender", "options": ["Male", "Female", "Non-Binary", "Prefer not to say"], "required": false},
+        {"type": "dropdown", "label": "Household Income", "options": ["Under $25K", "$25K–$50K", "$50K–$75K", "$75K–$100K", "$100K+", "Prefer not to say"], "required": false},
+        {"type": "checkbox_group", "label": "How do you hear about new products?", "options": ["Social Media", "Online Ads", "Word of Mouth", "TV / Radio", "Email Newsletter", "Search Engine"]},
+        {"type": "radio", "label": "How often do you shop online?", "options": ["Daily", "Weekly", "Monthly", "Rarely"], "required": true},
+        {"type": "rating", "label": "How important is sustainability when buying?", "scale": "5 Stars", "required": true},
+        {"type": "long_text", "label": "What factors most influence your purchase decisions?", "required": false}
+      ]
+    },
+    {
+      "id": "tpl_apt_001",
+      "name": "General Appointment Booking",
+      "description": "Book any type of appointment with service and time slot selection.",
+      "category": "appointment-booking-forms",
+      "design": {
+        "theme": "Calm Teal",
+        "primaryColor": "#0D9488",
+        "secondaryColor": "#F0FDFA",
+        "fontFamily": "Inter, sans-serif",
+        "layout": "Single Column",
+        "backgroundType": "Light Gradient"
+      },
+      "fields": [
+        {"type": "text", "label": "Full Name", "required": true},
+        {"type": "email", "label": "Email Address", "required": true},
+        {"type": "tel", "label": "Phone Number", "required": true},
+        {"type": "dropdown", "label": "Service", "options": ["General Consultation", "Follow-Up Visit", "Specialist Referral", "Lab Tests", "Dental Checkup", "Eye Exam"], "required": true},
+        {"type": "date", "label": "Preferred Date", "required": true},
+        {"type": "dropdown", "label": "Preferred Time Slot", "options": ["9:00 AM", "10:00 AM", "11:00 AM", "12:00 PM", "2:00 PM", "3:00 PM", "4:00 PM", "5:00 PM"], "required": true},
+        {"type": "radio", "label": "Appointment Type", "options": ["In-Person", "Video Call", "Phone Call"], "required": true},
+        {"type": "long_text", "label": "Reason for Visit / Notes", "required": false}
+      ]
+    },
+    {
+      "id": "tpl_nws_001",
+      "name": "Newsletter Signup",
+      "description": "Simple newsletter subscription form with topic preferences.",
+      "category": "newsletter-subscription-forms",
+      "design": {
+        "theme": "Indigo Clean",
+        "primaryColor": "#4F46E5",
+        "secondaryColor": "#EEF2FF",
+        "fontFamily": "Inter, sans-serif",
+        "layout": "Single Column",
+        "backgroundType": "White"
+      },
+      "fields": [
+        {"type": "text", "label": "First Name", "required": true},
+        {"type": "email", "label": "Email Address", "required": true},
+        {"type": "checkbox_group", "label": "Topics You Are Interested In", "options": ["Product Updates", "Industry News", "Tutorials & Tips", "Case Studies", "Promotions & Offers", "Events"]},
+        {"type": "radio", "label": "Preferred Frequency", "options": ["Daily", "Weekly Digest", "Monthly Roundup"], "required": false}
+      ]
+    },
+    {
+      "id": "tpl_vol_001",
+      "name": "Volunteer Application",
+      "description": "Recruit volunteers with availability, skills, and motivation fields.",
+      "category": "volunteer-donation-forms",
+      "design": {
+        "theme": "Charity Green",
+        "primaryColor": "#16A34A",
+        "secondaryColor": "#F0FDF4",
+        "fontFamily": "Open Sans, sans-serif",
+        "layout": "Single Column",
+        "backgroundType": "Light Gradient"
+      },
+      "fields": [
+        {"type": "text", "label": "Full Name", "required": true},
+        {"type": "email", "label": "Email Address", "required": true},
+        {"type": "tel", "label": "Phone Number", "required": true},
+        {"type": "date", "label": "Date of Birth", "required": false},
+        {"type": "checkbox_group", "label": "Areas You Can Help With", "options": ["Event Management", "Fundraising", "Administration", "Marketing & Social Media", "IT & Tech Support", "Teaching / Mentoring", "Driving / Logistics"]},
+        {"type": "availability", "label": "Availability", "options": ["Weekday Mornings", "Weekday Afternoons", "Weekday Evenings", "Saturday", "Sunday"]},
+        {"type": "number", "label": "Hours Available Per Week", "required": false},
+        {"type": "long_text", "label": "Why do you want to volunteer with us?", "required": true},
+        {"type": "long_text", "label": "Relevant Skills or Experience", "required": false}
+      ]
+    },
+    {
+      "id": "tpl_vol_002",
+      "name": "Donation Form",
+      "description": "Collect donor information and preferred donation amounts.",
+      "category": "volunteer-donation-forms",
+      "design": {
+        "theme": "Hope Orange",
+        "primaryColor": "#EA580C",
+        "secondaryColor": "#FFF7ED",
+        "fontFamily": "Inter, sans-serif",
+        "layout": "Card Layout",
+        "backgroundType": "White"
+      },
+      "fields": [
+        {"type": "text", "label": "Donor Full Name", "required": true},
+        {"type": "email", "label": "Email Address", "required": true},
+        {"type": "tel", "label": "Phone Number", "required": false},
+        {"type": "dropdown", "label": "Donation Amount", "options": ["$10", "$25", "$50", "$100", "$250", "$500", "Custom Amount"], "required": true},
+        {"type": "radio", "label": "Donation Type", "options": ["One-Time", "Monthly Recurring", "Annual"], "required": true},
+        {"type": "dropdown", "label": "Donate To", "options": ["General Fund", "Education Programs", "Emergency Relief", "Community Development", "Where Needed Most"], "required": false},
+        {"type": "radio", "label": "Would you like to remain anonymous?", "options": ["Yes", "No"], "required": false},
+        {"type": "long_text", "label": "Message (Optional)", "required": false}
+      ]
+    },
+    {
+      "id": "tpl_leg_001",
+      "name": "Liability Waiver Form",
+      "description": "Activity waiver with risk acknowledgement and digital signature.",
+      "category": "legal-compliance-forms",
+      "design": {
+        "theme": "Legal Formal",
+        "primaryColor": "#1E293B",
+        "secondaryColor": "#F8FAFC",
+        "fontFamily": "Times New Roman, serif",
+        "layout": "Single Column",
+        "backgroundType": "White"
+      },
+      "fields": [
+        {"type": "text", "label": "Participant Full Name", "required": true},
+        {"type": "date", "label": "Date of Birth", "required": true},
+        {"type": "email", "label": "Email Address", "required": true},
+        {"type": "tel", "label": "Phone Number", "required": true},
+        {"type": "text", "label": "Activity / Event Name", "required": true},
+        {"type": "date", "label": "Activity Date", "required": true},
+        {"type": "text", "label": "Emergency Contact Name", "required": true},
+        {"type": "tel", "label": "Emergency Contact Phone", "required": true},
+        {"type": "radio", "label": "Do you have any medical conditions we should know about?", "options": ["Yes", "No"], "required": true},
+        {"type": "long_text", "label": "If yes, please describe", "required": false},
+        {"type": "radio", "label": "I have read and agree to the liability waiver terms", "options": ["I Agree"], "required": true},
+        {"type": "signature", "label": "Participant Signature", "required": true},
+        {"type": "date", "label": "Signature Date", "required": true}
+      ]
+    },
+    {
+      "id": "tpl_fit_001",
+      "name": "Gym Membership Application",
+      "description": "Sign up new members with health information and plan selection.",
+      "category": "fitness-wellness-forms",
+      "design": {
+        "theme": "Fitness Energy",
+        "primaryColor": "#DC2626",
+        "secondaryColor": "#FEF2F2",
+        "fontFamily": "Oswald, sans-serif",
+        "layout": "Card Layout",
+        "backgroundType": "Gradient"
+      },
+      "fields": [
+        {"type": "text", "label": "Full Name", "required": true},
+        {"type": "email", "label": "Email Address", "required": true},
+        {"type": "tel", "label": "Phone Number", "required": true},
+        {"type": "date", "label": "Date of Birth", "required": true},
+        {"type": "dropdown", "label": "Membership Plan", "options": ["Basic ($29/month)", "Standard ($49/month)", "Premium ($79/month)", "Annual ($499/year)"], "required": true},
+        {"type": "checkbox_group", "label": "Fitness Goals", "options": ["Weight Loss", "Muscle Building", "Cardio Endurance", "Flexibility", "General Fitness", "Sports Training"]},
+        {"type": "radio", "label": "Have you exercised regularly in the past 6 months?", "options": ["Yes", "No"], "required": true},
+        {"type": "long_text", "label": "Any medical conditions or injuries?", "required": false},
+        {"type": "text", "label": "Emergency Contact Name", "required": true},
+        {"type": "tel", "label": "Emergency Contact Phone", "required": true},
+        {"type": "signature", "label": "Health Waiver Signature", "required": true}
+      ]
+    },
+    {
+      "id": "tpl_rest_001",
+      "name": "Table Reservation",
+      "description": "Book a table with party size, date, and special requests.",
+      "category": "restaurant-food-forms",
+      "design": {
+        "theme": "Elegant Dining",
+        "primaryColor": "#78350F",
+        "secondaryColor": "#FFFBEB",
+        "fontFamily": "Playfair Display, serif",
+        "layout": "Card Layout",
+        "backgroundType": "Light Gradient"
+      },
+      "fields": [
+        {"type": "text", "label": "Name", "required": true},
+        {"type": "email", "label": "Email Address", "required": true},
+        {"type": "tel", "label": "Phone Number", "required": true},
+        {"type": "date", "label": "Reservation Date", "required": true},
+        {"type": "dropdown", "label": "Time", "options": ["5:00 PM", "5:30 PM", "6:00 PM", "6:30 PM", "7:00 PM", "7:30 PM", "8:00 PM", "8:30 PM", "9:00 PM"], "required": true},
+        {"type": "dropdown", "label": "Party Size", "options": ["1 Guest", "2 Guests", "3-4 Guests", "5-6 Guests", "7-8 Guests", "9+ (Call Ahead)"], "required": true},
+        {"type": "dropdown", "label": "Seating Preference", "options": ["No Preference", "Indoor", "Outdoor Patio", "Private Room", "Bar Area"], "required": false},
+        {"type": "radio", "label": "Special Occasion?", "options": ["No", "Birthday", "Anniversary", "Business Dinner", "Other"], "required": false},
+        {"type": "long_text", "label": "Dietary Requirements or Allergies", "required": false},
+        {"type": "long_text", "label": "Special Requests", "required": false}
+      ]
+    },
+    {
+      "id": "tpl_real_001",
+      "name": "Rental Application",
+      "description": "Comprehensive rental application with employment and references.",
+      "category": "real-estate-forms",
+      "design": {
+        "theme": "Property Professional",
+        "primaryColor": "#1E40AF",
+        "secondaryColor": "#EFF6FF",
+        "fontFamily": "Inter, sans-serif",
+        "layout": "Two Column",
+        "backgroundType": "White"
+      },
+      "fields": [
+        {"type": "text", "label": "Full Legal Name", "required": true},
+        {"type": "email", "label": "Email Address", "required": true},
+        {"type": "tel", "label": "Phone Number", "required": true},
+        {"type": "date", "label": "Date of Birth", "required": true},
+        {"type": "text", "label": "Current Address", "required": true},
+        {"type": "text", "label": "Current Landlord Name", "required": false},
+        {"type": "tel", "label": "Landlord Phone", "required": false},
+        {"type": "text", "label": "Employer Name", "required": true},
+        {"type": "text", "label": "Job Title", "required": true},
+        {"type": "number", "label": "Monthly Income ($)", "required": true},
+        {"type": "number", "label": "Number of Occupants", "required": true},
+        {"type": "radio", "label": "Do you have pets?", "options": ["Yes", "No"], "required": true},
+        {"type": "text", "label": "Pet Details (if any)", "required": false},
+        {"type": "date", "label": "Desired Move-In Date", "required": true},
+        {"type": "text", "label": "Personal Reference Name", "required": true},
+        {"type": "tel", "label": "Reference Phone", "required": true},
+        {"type": "radio", "label": "Have you ever been evicted?", "options": ["Yes", "No"], "required": true},
+        {"type": "file_upload", "label": "Upload ID Document", "required": true},
+        {"type": "signature", "label": "Applicant Signature", "required": true}
+      ]
+    },
+    {
+      "id": "tpl_travel_001",
+      "name": "Trip Inquiry Form",
+      "description": "Collect travel preferences for custom trip planning.",
+      "category": "travel-hospitality-forms",
+      "design": {
+        "theme": "Adventure Blue",
+        "primaryColor": "#0369A1",
+        "secondaryColor": "#E0F2FE",
+        "fontFamily": "Poppins, sans-serif",
+        "layout": "Card Layout",
+        "backgroundType": "Gradient"
+      },
+      "fields": [
+        {"type": "text", "label": "Full Name", "required": true},
+        {"type": "email", "label": "Email Address", "required": true},
+        {"type": "tel", "label": "Phone Number", "required": true},
+        {"type": "text", "label": "Destination(s) of Interest", "required": true},
+        {"type": "date", "label": "Departure Date", "required": true},
+        {"type": "date", "label": "Return Date", "required": true},
+        {"type": "number", "label": "Number of Travelers", "required": true},
+        {"type": "dropdown", "label": "Trip Type", "options": ["Beach/Relaxation", "Adventure/Outdoor", "Cultural/Historical", "City/Urban", "Cruise", "Safari", "Ski/Winter", "Multi-Destination"], "required": true},
+        {"type": "dropdown", "label": "Budget Per Person", "options": ["Economy ($500-$1500)", "Mid-Range ($1500-$3000)", "Luxury ($3000-$5000)", "Ultra-Luxury ($5000+)"], "required": true},
+        {"type": "checkbox_group", "label": "Interests", "options": ["Beaches", "Hiking", "Museums", "Local Cuisine", "Nightlife", "Shopping", "Wildlife", "Photography"]},
+        {"type": "long_text", "label": "Special Requirements or Requests", "required": false}
+      ]
+    },
+    {
+      "id": "tpl_creative_001",
+      "name": "Design Project Request",
+      "description": "Collect client requirements for graphic design or web projects.",
+      "category": "creative-portfolio-forms",
+      "design": {
+        "theme": "Creative Studio",
+        "primaryColor": "#EC4899",
+        "secondaryColor": "#FDF2F8",
+        "fontFamily": "Space Grotesk, sans-serif",
+        "layout": "Card Layout",
+        "backgroundType": "Gradient"
+      },
+      "fields": [
+        {"type": "text", "label": "Your Name", "required": true},
+        {"type": "text", "label": "Company / Brand Name", "required": false},
+        {"type": "email", "label": "Email Address", "required": true},
+        {"type": "tel", "label": "Phone Number", "required": false},
+        {"type": "dropdown", "label": "Project Type", "options": ["Logo Design", "Brand Identity", "Website Design", "Social Media Graphics", "Print Materials", "Packaging", "UI/UX Design", "Other"], "required": true},
+        {"type": "dropdown", "label": "Budget Range", "options": ["Under $500", "$500-$1,500", "$1,500-$5,000", "$5,000-$10,000", "$10,000+", "Not Sure"], "required": true},
+        {"type": "date", "label": "Project Deadline", "required": false},
+        {"type": "long_text", "label": "Project Description", "placeholder": "Tell us about your vision, goals, and any specific requirements", "required": true},
+        {"type": "long_text", "label": "Inspiration / Reference Links", "placeholder": "Share links to designs you like", "required": false},
+        {"type": "file_upload", "label": "Upload Brief or Assets", "required": false},
+        {"type": "radio", "label": "How did you find us?", "options": ["Google", "Social Media", "Referral", "Portfolio Site", "Other"], "required": false}
+      ]
+    },
+    {
+      "id": "tpl_pet_001",
+      "name": "Pet Sitting / Boarding Request",
+      "description": "Book pet care services with pet details and care instructions.",
+      "category": "pet-animal-forms",
+      "design": {
+        "theme": "Pet Friendly",
+        "primaryColor": "#EA580C",
+        "secondaryColor": "#FFF7ED",
+        "fontFamily": "Nunito, sans-serif",
+        "layout": "Card Layout",
+        "backgroundType": "Light Gradient"
+      },
+      "fields": [
+        {"type": "text", "label": "Owner Name", "required": true},
+        {"type": "email", "label": "Email Address", "required": true},
+        {"type": "tel", "label": "Phone Number", "required": true},
+        {"type": "text", "label": "Pet Name", "required": true},
+        {"type": "dropdown", "label": "Pet Type", "options": ["Dog", "Cat", "Bird", "Fish", "Reptile", "Small Animal (Hamster/Rabbit)", "Other"], "required": true},
+        {"type": "text", "label": "Breed", "required": false},
+        {"type": "number", "label": "Pet Age (years)", "required": true},
+        {"type": "number", "label": "Pet Weight (lbs)", "required": false},
+        {"type": "date", "label": "Drop-Off Date", "required": true},
+        {"type": "date", "label": "Pick-Up Date", "required": true},
+        {"type": "radio", "label": "Vaccinations Up to Date?", "options": ["Yes", "No"], "required": true},
+        {"type": "long_text", "label": "Feeding Instructions", "required": true},
+        {"type": "long_text", "label": "Medical Conditions / Medications", "required": false},
+        {"type": "long_text", "label": "Special Care Notes", "required": false},
+        {"type": "text", "label": "Veterinarian Name & Phone", "required": true},
+        {"type": "text", "label": "Emergency Contact", "required": true}
+      ]
+    }
+  ]
+}

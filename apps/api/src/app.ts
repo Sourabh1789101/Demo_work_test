@@ -14,11 +14,12 @@ import { workspacesRouter } from './routes/workspaces.js';
 import { gdprRouter } from './routes/gdpr.js';
 import { webhooksRouter } from './routes/webhooks.js';
 import { paymentsRouter } from './routes/payments.js';
+import { aiRouter } from './routes/ai.js';
+import { aiFormGeneratorService } from './services/AIFormGeneratorService.js';
 
 dotenv.config();
 
 const app = express();
-const port = Number(process.env.PORT || 4000);
 
 // Security headers
 app.use(
@@ -68,6 +69,16 @@ app.use('/api/workspaces', workspacesRouter);
 app.use('/api/gdpr', gdprRouter);
 app.use('/api', webhooksRouter);
 app.use('/api/payments', paymentsRouter);
+app.use('/api/ai', aiRouter);
+
+// Configure AI service if API key is available
+if (process.env.GEMINI_API_KEY) {
+	aiFormGeneratorService.configure({
+		apiKey: process.env.GEMINI_API_KEY,
+		model: process.env.GEMINI_MODEL || 'gemini-2.0-flash',
+	});
+	logger.info('AI Form Generator service configured with Google Gemini');
+}
 
 // 404 handler
 app.use((_req, res) => {
@@ -92,15 +103,3 @@ app.use(
 );
 
 export { app };
-
-// Initialize database and listen
-void initDatabase()
-	.then(() => {
-		app.listen(port, () => {
-			logger.info(`API listening on http://localhost:${port}`);
-		});
-	})
-	.catch((error) => {
-		logger.error({ err: error }, 'Failed to initialize database');
-		process.exit(1);
-	});

@@ -16,19 +16,21 @@ import {
   Users,
   TrendingUp,
   Eye,
+  Sparkles,
 } from 'lucide-react';
 import { formService } from '../services/formService';
 import type { StoredForm } from '../services/formService';
 import { useBuilderStore } from '../../modules/store/builderStore';
 import { ShareModal } from '../components/shared/ShareModal';
+import { AIFormGeneratorModal } from '../components/AIFormGeneratorModal';
 
-const KIM_LOGO = () => (
+const FORMBUILDER_LOGO = () => (
   <div className="flex items-center gap-2.5">
     <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-violet-600 to-indigo-600 flex items-center justify-center shadow-lg shadow-violet-200">
       <Zap size={16} className="text-white" />
     </div>
     <span className="text-xl font-bold bg-gradient-to-r from-violet-700 to-indigo-600 bg-clip-text text-transparent tracking-tight">
-      KIM AI
+      FormBuilder
     </span>
   </div>
 );
@@ -193,6 +195,7 @@ export const DashboardPage: React.FC = () => {
   const [search, setSearch] = useState('');
   const [sortBy, setSortBy] = useState<'updated' | 'name'>('updated');
   const [shareFormId, setShareFormId] = useState<string | null>(null);
+  const [showAIModal, setShowAIModal] = useState(false);
   const { resetSchema, setSchema } = useBuilderStore();
 
   useEffect(() => {
@@ -222,6 +225,13 @@ export const DashboardPage: React.FC = () => {
     }
   };
 
+  const handleAIFormGenerated = () => {
+    // Refresh forms list from database
+    void formService.listForms()
+      .then(setForms)
+      .catch(console.error);
+  };
+
   const filtered = forms
     .filter((f) =>
       f.title.toLowerCase().includes(search.toLowerCase()) ||
@@ -241,11 +251,24 @@ export const DashboardPage: React.FC = () => {
       {shareFormId && (
         <ShareModal formId={shareFormId} onClose={() => setShareFormId(null)} />
       )}
+      <AIFormGeneratorModal
+        isOpen={showAIModal}
+        onClose={() => setShowAIModal(false)}
+        onFormGenerated={handleAIFormGenerated}
+      />
       {/* Top Nav */}
       <nav className="bg-white border-b border-gray-100 sticky top-0 z-20">
         <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
-          <KIM_LOGO />
+          <FORMBUILDER_LOGO />
           <div className="flex items-center gap-3">
+            <button
+              type="button"
+              onClick={() => setShowAIModal(true)}
+              className="hidden sm:flex items-center gap-2 px-4 py-2 text-sm font-medium bg-gradient-to-r from-purple-600 to-indigo-600 text-white hover:from-purple-700 hover:to-indigo-700 rounded-lg transition-colors shadow-sm"
+            >
+              <Sparkles size={16} />
+              AI Generate
+            </button>
             <button
               type="button"
               onClick={() => navigate('/builder')}
@@ -272,7 +295,7 @@ export const DashboardPage: React.FC = () => {
           <div className="absolute top-0 right-0 w-64 h-64 bg-white/5 rounded-full -translate-y-1/2 translate-x-1/2" />
           <div className="absolute bottom-0 left-1/3 w-48 h-48 bg-white/5 rounded-full translate-y-1/2" />
           <div className="relative">
-            <h1 className="text-2xl font-bold mb-1">Welcome to KIM AI Form Builder</h1>
+            <h1 className="text-2xl font-bold mb-1">Welcome to FormBuilder</h1>
             <p className="text-violet-200 text-sm">Create beautiful forms, collect responses, and analyze results.</p>
             <button
               type="button"
@@ -281,6 +304,14 @@ export const DashboardPage: React.FC = () => {
             >
               <Plus size={16} />
               Build Your First Form
+            </button>
+            <button
+              type="button"
+              onClick={() => setShowAIModal(true)}
+              className="mt-5 ml-3 inline-flex items-center gap-2 px-5 py-2.5 bg-white/20 text-white font-semibold text-sm rounded-xl hover:bg-white/30 transition-colors border border-white/30"
+            >
+              <Sparkles size={16} />
+              Generate with AI
             </button>
           </div>
         </div>

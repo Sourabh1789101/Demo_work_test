@@ -3,7 +3,7 @@ import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 import { useBuilderStore } from '../../../modules/store/builderStore';
 import { FormComponent } from '../../../modules/Core/types';
-import { Trash2, Copy, GripVertical } from 'lucide-react';
+import { Trash2, Copy, GripVertical, Edit2 } from 'lucide-react';
 import { componentRegistry } from '../../../lib/componentRegistry';
 
 interface CanvasItemProps {
@@ -14,7 +14,7 @@ interface CanvasItemProps {
 
 export const CanvasItem: React.FC<CanvasItemProps> = ({ component, index, isPreview }) => {
   const { selectedId, selectComponent, removeComponent, duplicateComponent } = useBuilderStore();
-  
+
   const {
     attributes,
     listeners,
@@ -43,7 +43,7 @@ export const CanvasItem: React.FC<CanvasItemProps> = ({ component, index, isPrev
 
   if (isPreview) {
     return (
-      <div className="py-2">
+      <div className="py-3">
         <ComponentPreview component={component} />
       </div>
     );
@@ -55,17 +55,19 @@ export const CanvasItem: React.FC<CanvasItemProps> = ({ component, index, isPrev
       style={style}
       className={`
         relative group transition-all duration-200
-        ${isDragging ? 'opacity-40 rotate-1' : ''}
+        ${isDragging ? 'opacity-50 scale-100' : ''}
       `}
       onClick={(e) => {
         e.stopPropagation();
         selectComponent(component.id);
       }}
     >
-      {/* Selection Border */}
+      {/* Selection Border & Background */}
       <div className={`
-        absolute inset-0 border-2 rounded-lg pointer-events-none transition-colors duration-200
-        ${isSelected ? 'border-blue-500 bg-blue-50/30' : 'border-transparent group-hover:border-blue-300'}
+        absolute inset-0 rounded-xl pointer-events-none transition-all duration-200
+        ${isSelected
+          ? 'border-2 border-blue-500 bg-blue-50 shadow-md shadow-blue-200/50'
+          : 'border-2 border-transparent group-hover:border-blue-300 group-hover:bg-blue-50/40'}
       `} />
 
       {/* Drag Handle */}
@@ -73,35 +75,35 @@ export const CanvasItem: React.FC<CanvasItemProps> = ({ component, index, isPrev
         {...attributes}
         {...listeners}
         className={`
-          absolute left-0 top-1/2 -translate-y-1/2 -translate-x-full pr-2
+          absolute left-0 top-1/2 -translate-y-1/2 -translate-x-full pr-3
           cursor-grab active:cursor-grabbing
+          transition-all duration-200
           ${isSelected ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'}
-          transition-opacity duration-200
         `}
       >
-        <div className="bg-blue-500 text-white p-1.5 rounded-l-md shadow-sm">
-          <GripVertical size={14} />
+        <div className="bg-gradient-to-br from-blue-500 to-blue-600 text-white p-2 rounded-lg shadow-md hover:shadow-lg transition-shadow">
+          <GripVertical size={16} />
         </div>
       </div>
 
       {/* Action Toolbar */}
       {isSelected && (
-        <div className="absolute -top-3 right-2 flex items-center space-x-1 z-20">
-          <ActionButton 
+        <div className="absolute -top-3.5 right-3 flex items-center gap-1.5 z-20">
+          <ActionButton
             onClick={(e) => {
               e.stopPropagation();
               duplicateComponent(component.id);
             }}
-            icon={<Copy size={12} />}
+            icon={<Copy size={14} />}
             label="Duplicate"
             variant="secondary"
           />
-          <ActionButton 
+          <ActionButton
             onClick={(e) => {
               e.stopPropagation();
               removeComponent(component.id);
             }}
-            icon={<Trash2 size={12} />}
+            icon={<Trash2 size={14} />}
             label="Delete"
             variant="danger"
           />
@@ -109,13 +111,13 @@ export const CanvasItem: React.FC<CanvasItemProps> = ({ component, index, isPrev
       )}
 
       {/* Component Content */}
-      <div className="p-4">
-        <ComponentPreview component={component} definition={definition} />
+      <div className="px-5 py-4 relative z-0">
+        <ComponentPreview component={component} definition={definition} isSelected={isSelected} />
       </div>
 
       {/* Width Indicator (if resized) */}
       {component.styles?.width && component.styles.width !== 'full' && (
-        <div className="absolute -bottom-1 left-1/2 -translate-x-1/2 text-[10px] text-gray-400 bg-white px-2 border rounded-full">
+        <div className="absolute -bottom-2 left-1/2 -translate-x-1/2 text-[11px] font-medium text-gray-600 bg-white px-2.5 py-1 border border-gray-200 rounded-full shadow-sm">
           {component.styles.width}
         </div>
       )}
@@ -130,9 +132,9 @@ const ActionButton: React.FC<{
   variant?: 'primary' | 'secondary' | 'danger';
 }> = ({ onClick, icon, label, variant = 'secondary' }) => {
   const colors = {
-    primary: 'bg-blue-500 text-white hover:bg-blue-600',
-    secondary: 'bg-white text-gray-700 border border-gray-200 hover:bg-gray-50',
-    danger: 'bg-red-50 text-red-600 border border-red-200 hover:bg-red-100',
+    primary: 'bg-blue-500 text-white hover:bg-blue-600 shadow-md shadow-blue-200',
+    secondary: 'bg-white text-blue-600 border border-blue-200 hover:bg-blue-50 shadow-sm',
+    danger: 'bg-red-50 text-red-600 border border-red-200 hover:bg-red-100 shadow-sm',
   };
 
   return (
@@ -140,7 +142,7 @@ const ActionButton: React.FC<{
       type="button"
       onClick={onClick}
       title={label}
-      className={`p-1.5 rounded shadow-sm transition-colors ${colors[variant]}`}
+      className={`p-2 rounded-lg transition-all duration-150 hover:scale-105 active:scale-95 ${colors[variant]}`}
     >
       {icon}
     </button>
@@ -148,10 +150,11 @@ const ActionButton: React.FC<{
 };
 
 // Visual preview of the component
-const ComponentPreview: React.FC<{ 
-  component: FormComponent; 
-  definition?: any 
-}> = ({ component, definition }) => {
+const ComponentPreview: React.FC<{
+  component: FormComponent;
+  definition?: any;
+  isSelected?: boolean;
+}> = ({ component, definition, isSelected }) => {
   const widthClass = {
     full: 'w-full',
     half: 'w-1/2 inline-block pr-4',
@@ -172,7 +175,7 @@ const ComponentPreview: React.FC<{
 
       case 'paragraph':
         return (
-          <p className="text-gray-600">
+          <p className="text-gray-600 leading-relaxed">
             {component.properties?.content || 'Lorem ipsum dolor sit amet...'}
           </p>
         );
@@ -184,22 +187,22 @@ const ComponentPreview: React.FC<{
       case 'radio':
         return (
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+            <label className="block text-sm font-semibold text-gray-800 mb-2.5">
               {component.label}
               {component.validation?.some(v => v.type === 'required') && (
                 <span className="text-red-500 ml-1">*</span>
               )}
             </label>
-            <div className="space-y-2">
-              {(component.properties?.options || []).map((opt: any) => (
-                <label key={opt.id || opt.value} className="flex items-center space-x-2 cursor-pointer">
-                  <input 
-                    type={component.type === 'radio' ? 'radio' : 'checkbox'} 
+            <div className="space-y-2.5">
+              {(component.properties?.options || []).slice(0, 2).map((opt: any) => (
+                <label key={opt.id || opt.value} className="flex items-center space-x-3 cursor-pointer group">
+                  <input
+                    type={component.type === 'radio' ? 'radio' : 'checkbox'}
                     name={component.type === 'radio' ? component.id : undefined}
-                    disabled 
-                    className="text-blue-600 cursor-pointer" 
+                    disabled
+                    className="text-blue-600 cursor-pointer w-4 h-4"
                   />
-                  <span className="text-sm text-gray-700">{opt.label}</span>
+                  <span className="text-sm text-gray-700 font-medium">{opt.label}</span>
                 </label>
               ))}
             </div>
@@ -209,7 +212,7 @@ const ComponentPreview: React.FC<{
       case 'select':
         return (
           <div className={widthClass}>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
+            <label className="block text-sm font-semibold text-gray-800 mb-2">
               {component.label}
               {component.validation?.some(v => v.type === 'required') && (
                 <span className="text-red-500 ml-1">*</span>
@@ -217,10 +220,10 @@ const ComponentPreview: React.FC<{
             </label>
             <select
               disabled
-              className="w-full px-3 py-2 bg-gray-50 border border-gray-300 rounded-md text-gray-500 text-sm cursor-not-allowed"
+              className="w-full px-4 py-2.5 bg-gray-50 border border-gray-300 rounded-lg text-gray-500 text-sm cursor-not-allowed focus:ring-2 focus:ring-blue-500"
             >
               <option>{component.properties?.placeholder || 'Select an option...'}</option>
-              {(component.properties?.options || []).map((opt: any) => (
+              {(component.properties?.options || []).slice(0, 2).map((opt: any) => (
                 <option key={opt.id || opt.value} value={opt.value}>
                   {opt.label}
                 </option>
@@ -232,22 +235,22 @@ const ComponentPreview: React.FC<{
       case 'multiselect':
         return (
           <div className={widthClass}>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
+            <label className="block text-sm font-semibold text-gray-800 mb-2">
               {component.label}
               {component.validation?.some(v => v.type === 'required') && (
                 <span className="text-red-500 ml-1">*</span>
               )}
             </label>
-            <div className="border border-gray-300 rounded-md bg-gray-50 divide-y divide-gray-200 max-h-32 overflow-hidden cursor-not-allowed">
-              {(component.properties?.options || []).slice(0, 4).map((opt: any) => (
-                <div key={opt.id || opt.value} className="flex items-center gap-2 px-3 py-1.5">
-                  <input type="checkbox" disabled aria-label={opt.label} className="w-3.5 h-3.5 text-blue-600 border-gray-300 rounded" />
-                  <span className="text-xs text-gray-600">{opt.label}</span>
+            <div className="border border-gray-300 rounded-lg bg-gray-50 divide-y divide-gray-200 max-h-32 overflow-hidden cursor-not-allowed">
+              {(component.properties?.options || []).slice(0, 3).map((opt: any) => (
+                <div key={opt.id || opt.value} className="flex items-center gap-3 px-4 py-2.5">
+                  <input type="checkbox" disabled aria-label={opt.label} className="w-4 h-4 text-blue-600 border-gray-300 rounded" />
+                  <span className="text-sm text-gray-700 font-medium">{opt.label}</span>
                 </div>
               ))}
             </div>
             {component.properties?.helperText && (
-              <p className="mt-1 text-xs text-gray-500">{component.properties.helperText}</p>
+              <p className="mt-2 text-xs text-gray-500">{component.properties.helperText}</p>
             )}
           </div>
         );
@@ -255,7 +258,7 @@ const ComponentPreview: React.FC<{
       case 'textarea':
         return (
           <div className={widthClass}>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
+            <label className="block text-sm font-semibold text-gray-800 mb-2">
               {component.label}
               {component.validation?.some(v => v.type === 'required') && (
                 <span className="text-red-500 ml-1">*</span>
@@ -265,10 +268,10 @@ const ComponentPreview: React.FC<{
               disabled
               rows={component.properties?.rows || 4}
               placeholder={component.properties?.placeholder}
-              className="w-full px-3 py-2 bg-gray-50 border border-gray-300 rounded-md text-gray-500 text-sm cursor-not-allowed resize-none"
+              className="w-full px-4 py-2.5 bg-gray-50 border border-gray-300 rounded-lg text-gray-500 text-sm cursor-not-allowed resize-none focus:ring-2 focus:ring-blue-500"
             />
             {component.properties?.helperText && (
-              <p className="mt-1 text-xs text-gray-500">{component.properties.helperText}</p>
+              <p className="mt-2 text-xs text-gray-500">{component.properties.helperText}</p>
             )}
           </div>
         );
@@ -276,17 +279,17 @@ const ComponentPreview: React.FC<{
       case 'file':
         return (
           <div className={widthClass}>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
+            <label className="block text-sm font-semibold text-gray-800 mb-2">
               {component.label}
               {component.validation?.some(v => v.type === 'required') && (
                 <span className="text-red-500 ml-1">*</span>
               )}
             </label>
-            <div className="border-2 border-dashed border-gray-300 rounded-md p-4 text-center bg-gray-50">
-              <div className="text-gray-400 mb-1">📎</div>
-              <div className="text-xs text-gray-500">Click to upload or drag and drop</div>
+            <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center bg-gray-50 hover:bg-gray-100 transition">
+              <div className="text-3xl mb-2">📎</div>
+              <div className="text-sm text-gray-600 font-medium">Click to upload or drag and drop</div>
               {component.properties?.accept && (
-                <div className="text-xs text-gray-400 mt-1">{component.properties.accept}</div>
+                <div className="text-xs text-gray-500 mt-1">{component.properties.accept}</div>
               )}
             </div>
           </div>
@@ -295,12 +298,12 @@ const ComponentPreview: React.FC<{
       case 'rating':
         return (
           <div className={widthClass}>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
+            <label className="block text-sm font-semibold text-gray-800 mb-2.5">
               {component.label}
             </label>
-            <div className="flex space-x-1">
+            <div className="flex space-x-2">
               {Array.from({ length: component.properties?.maxRating || 5 }).map((_, i) => (
-                <span key={i} className="text-yellow-400 text-xl">★</span>
+                <button key={i} className="text-2xl cursor-pointer hover:scale-110 transition">★</button>
               ))}
             </div>
           </div>
@@ -309,22 +312,22 @@ const ComponentPreview: React.FC<{
       case 'signature':
         return (
           <div className={widthClass}>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
+            <label className="block text-sm font-semibold text-gray-800 mb-2">
               {component.label}
             </label>
-            <div className="border border-gray-300 rounded-md p-4 bg-white h-32 flex items-center justify-center text-gray-400">
-              <span>✍️ Sign here</span>
+            <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 bg-white flex items-center justify-center text-gray-400 h-40">
+              <span className="text-2xl">✍️ Sign here</span>
             </div>
           </div>
         );
 
       case 'toggle':
         return (
-          <div className="flex items-center space-x-3">
-            <div className="relative inline-block w-11 h-6 bg-gray-300 rounded-full cursor-pointer">
-              <div className="absolute left-1 top-1 bg-white w-4 h-4 rounded-full transition"></div>
+          <div className="flex items-center space-x-4">
+            <div className="relative inline-block w-12 h-7 bg-gray-300 rounded-full cursor-pointer transition">
+              <div className="absolute left-1 top-1 bg-white w-5 h-5 rounded-full transition"></div>
             </div>
-            <label className="text-sm font-medium text-gray-700">
+            <label className="text-sm font-semibold text-gray-800">
               {component.label}
             </label>
           </div>
@@ -333,7 +336,7 @@ const ComponentPreview: React.FC<{
       case 'slider':
         return (
           <div className={widthClass}>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
+            <label className="block text-sm font-semibold text-gray-800 mb-3">
               {component.label}
             </label>
             <input
@@ -341,9 +344,9 @@ const ComponentPreview: React.FC<{
               min={component.properties?.min || 0}
               max={component.properties?.max || 100}
               disabled
-              className="w-full"
+              className="w-full h-2 bg-gray-300 rounded-lg appearance-none cursor-not-allowed"
             />
-            <div className="flex justify-between text-xs text-gray-500 mt-1">
+            <div className="flex justify-between text-xs text-gray-600 mt-2 font-medium">
               <span>{component.properties?.min || 0}</span>
               <span>{component.properties?.max || 100}</span>
             </div>
@@ -357,7 +360,7 @@ const ComponentPreview: React.FC<{
       case 'week':
         return (
           <div className={widthClass}>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
+            <label className="block text-sm font-semibold text-gray-800 mb-2">
               {component.label}
               {component.validation?.some(v => v.type === 'required') && (
                 <span className="text-red-500 ml-1">*</span>
@@ -366,7 +369,7 @@ const ComponentPreview: React.FC<{
             <input
               type={component.type}
               disabled
-              className="w-full px-3 py-2 bg-gray-50 border border-gray-300 rounded-md text-gray-500 text-sm cursor-not-allowed"
+              className="w-full px-4 py-2.5 bg-gray-50 border border-gray-300 rounded-lg text-gray-500 text-sm cursor-not-allowed focus:ring-2 focus:ring-blue-500"
             />
           </div>
         );
@@ -374,17 +377,17 @@ const ComponentPreview: React.FC<{
       case 'image-upload':
         return (
           <div className={widthClass}>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
+            <label className="block text-sm font-semibold text-gray-800 mb-2">
               {component.label}
               {component.validation?.some(v => v.type === 'required') && (
                 <span className="text-red-500 ml-1">*</span>
               )}
             </label>
-            <div className="border-2 border-dashed border-gray-300 rounded-md p-4 text-center bg-gray-50">
-              <div className="text-2xl text-gray-400 mb-1">🖼️</div>
-              <div className="text-xs text-gray-500">Click to upload image</div>
+            <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center bg-gray-50 hover:bg-gray-100 transition">
+              <div className="text-4xl text-gray-400 mb-2">🖼️</div>
+              <div className="text-sm text-gray-600 font-medium">Click to upload image</div>
               {component.properties?.accept && (
-                <div className="text-xs text-gray-400 mt-1">{component.properties.accept}</div>
+                <div className="text-xs text-gray-500 mt-1">{component.properties.accept}</div>
               )}
             </div>
           </div>
@@ -396,7 +399,7 @@ const ComponentPreview: React.FC<{
         };
         const spacerCls = SPACER_H[component.properties?.size ?? 'medium'] ?? 'h-16';
         return (
-          <div className={`flex items-center justify-center text-[10px] text-gray-400 border border-dashed border-gray-200 rounded bg-gray-50/50 ${spacerCls}`}>
+          <div className={`flex items-center justify-center text-xs text-gray-400 border-2 border-dashed border-gray-200 rounded-lg bg-gray-50/50 font-medium ${spacerCls}`}>
             Spacer ({component.properties?.size ?? 'medium'})
           </div>
         );
@@ -404,8 +407,8 @@ const ComponentPreview: React.FC<{
 
       case 'html':
         return (
-          <div className="border border-gray-200 rounded-md p-3 bg-white">
-            <div className="text-[10px] text-purple-500 font-mono uppercase tracking-wider mb-1">HTML Block</div>
+          <div className="border border-gray-200 rounded-lg p-4 bg-white">
+            <div className="text-xs text-purple-600 font-bold uppercase tracking-wider mb-2">HTML Block</div>
             <p className="text-xs text-gray-500 font-mono truncate">
               {component.properties?.content || '<p>HTML content</p>'}
             </p>
@@ -414,8 +417,8 @@ const ComponentPreview: React.FC<{
 
       case 'markdown':
         return (
-          <div className="border border-gray-200 rounded-md p-3 bg-white">
-            <div className="text-[10px] text-teal-500 font-mono uppercase tracking-wider mb-1">Markdown</div>
+          <div className="border border-gray-200 rounded-lg p-4 bg-white">
+            <div className="text-xs text-teal-600 font-bold uppercase tracking-wider mb-2">Markdown</div>
             <p className="text-xs text-gray-500 font-mono line-clamp-2 whitespace-pre-line">
               {component.properties?.content || '## Title\n\nMarkdown content...'}
             </p>
@@ -424,8 +427,8 @@ const ComponentPreview: React.FC<{
 
       case 'container':
         return (
-          <div className="border-2 border-dashed border-gray-300 rounded-md p-4 bg-gray-50">
-            <div className="text-sm text-gray-500 text-center">
+          <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 bg-gray-50">
+            <div className="text-sm text-gray-600 text-center font-medium">
               {component.label} - Drop components here
             </div>
           </div>
@@ -433,9 +436,9 @@ const ComponentPreview: React.FC<{
 
       case 'page-break':
         return (
-          <div className="border-t-2 border-blue-300 pt-4 mt-4">
+          <div className="border-t-2 border-blue-300 pt-6 mt-6">
             <div className="text-center">
-              <button type="button" className="px-4 py-2 bg-blue-500 text-white rounded-md text-sm font-medium cursor-not-allowed" disabled>
+              <button type="button" className="px-6 py-2.5 bg-blue-600 text-white rounded-lg text-sm font-semibold cursor-not-allowed" disabled>
                 {component.properties?.content || 'Continue'}
               </button>
             </div>
@@ -444,17 +447,17 @@ const ComponentPreview: React.FC<{
 
       default:
         // Standard input (textfield, email, number, password, phone, url, color)
-        const inputType = component.type === 'textfield' ? 'text' : 
+        const inputType = component.type === 'textfield' ? 'text' :
                          component.type === 'email' ? 'email' :
                          component.type === 'number' ? 'number' :
                          component.type === 'password' ? 'password' :
                          component.type === 'phone' ? 'tel' :
                          component.type === 'url' ? 'url' :
                          component.type === 'color' ? 'color' : 'text';
-        
+
         return (
           <div className={widthClass}>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
+            <label className="block text-sm font-semibold text-gray-800 mb-2">
               {component.label}
               {component.validation?.some(v => v.type === 'required') && (
                 <span className="text-red-500 ml-1">*</span>
@@ -467,10 +470,10 @@ const ComponentPreview: React.FC<{
               min={component.properties?.min}
               max={component.properties?.max}
               step={component.properties?.step}
-              className="w-full px-3 py-2 bg-gray-50 border border-gray-300 rounded-md text-gray-500 text-sm cursor-not-allowed"
+              className="w-full px-4 py-2.5 bg-gray-50 border border-gray-300 rounded-lg text-gray-500 text-sm cursor-not-allowed focus:ring-2 focus:ring-blue-500 transition"
             />
             {component.properties?.helperText && (
-              <p className="mt-1 text-xs text-gray-500">{component.properties.helperText}</p>
+              <p className="mt-2 text-xs text-gray-500">{component.properties.helperText}</p>
             )}
           </div>
         );
@@ -481,7 +484,7 @@ const ComponentPreview: React.FC<{
     <div className="relative">
       {/* Type Badge */}
       {definition && (
-        <div className="absolute -top-2 left-2 bg-gray-100 text-gray-500 text-[10px] px-2 py-0.5 rounded opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none uppercase tracking-wider font-medium">
+        <div className="absolute -top-2.5 left-3 bg-white border border-gray-200 text-gray-700 text-[10px] px-2.5 py-1 rounded-full opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none uppercase tracking-widest font-bold shadow-sm">
           {definition.label}
         </div>
       )}
@@ -489,3 +492,4 @@ const ComponentPreview: React.FC<{
     </div>
   );
 };
+

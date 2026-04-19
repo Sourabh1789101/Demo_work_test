@@ -24,7 +24,7 @@ const KIM_LOGO = () => (
       <Zap size={13} className="text-white" />
     </div>
     <span className="text-lg font-bold bg-gradient-to-r from-violet-700 to-indigo-600 bg-clip-text text-transparent">
-      KIM AI
+      FormBuilder
     </span>
   </div>
 );

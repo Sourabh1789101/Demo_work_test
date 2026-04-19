@@ -1,8 +1,8 @@
-# KIM AI Form Builder
+# FormBuilder
 
-**Local development form builder with drag-and-drop interface, JWT authentication, and PostgreSQL database.**
+**Modern drag-and-drop form builder with JWT authentication, PostgreSQL database, and Vercel deployment ready.**
 
-**Version:** 0.1.0 (Beta) | **Status:** ✅ Development Ready | **Updated:** March 31, 2026
+**Version:** 0.1.0 (Beta) | **Status:** ✅ Production Ready | **Updated:** April 19, 2026
 
 ---
 
@@ -46,6 +46,7 @@ docker compose down
 | Feature | Status |
 |---------|--------|
 | **Drag-and-drop form builder** | ✅ 20+ field types |
+| **AI Form Generation** | ✅ Generate forms from natural language prompts |
 | **Authentication** | ✅ JWT + Login/Signup/Demo mode |
 | **Responsive preview** | ✅ Desktop/Tablet/Mobile frames |
 | **Form templates** | ✅ 29 templates × 12 categories |
@@ -129,6 +130,8 @@ packages/             # Shared types & utilities
 |----------|--------|------|---------|
 | `/auth/register` | POST | None | Create account |
 | `/auth/login` | POST | None | Sign in |
+| `/ai/generate` | POST | ✅ | Generate form with AI |
+| `/ai/status` | GET | ✅ | AI service status |
 | `/forms` | GET | ✅ | List forms |
 | `/forms/:id` | GET/PUT/DELETE | ✅ | CRUD operations |
 | `/payments/intent` | POST | None | Create payment |
@@ -200,6 +203,8 @@ JWT_REFRESH_SECRET=<different-random-32-chars>
 
 ```
 ALLOWED_ORIGINS=http://localhost:3000,http://localhost:5173
+OPENAI_API_KEY=<your-openai-api-key>   # For AI form generation
+OPENAI_MODEL=gpt-4o-mini               # Model to use (default: gpt-4o-mini)
 ```
 
 **Generate secrets:**
@@ -213,6 +218,7 @@ node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"
 
 ### Frontend
 - ✅ Drag-and-drop form builder
+- ✅ **AI-powered form generation** (natural language to form)
 - ✅ 20+ field types (text, email, date, payment, etc)
 - ✅ Device preview (desktop/tablet/mobile)
 - ✅ Undo/Redo (50 snapshots)
@@ -224,6 +230,7 @@ node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"
 
 ### Backend
 - ✅ REST API
+- ✅ **AI Form Generator Service** (OpenAI GPT-4o-mini)
 - ✅ JWT authentication
 - ✅ PostgreSQL database
 - ✅ Stripe payments
