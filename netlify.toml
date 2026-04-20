@@ -1,0 +1,51 @@
+[build]
+  # Build command for monorepo
+  command = "turbo run build --filter=apps/web"
+  # Output directory (where Netlify will serve from)
+  publish = "apps/web/dist"
+  # Base directory
+  base = "."
+  # Functions directory for serverless functions
+  functions = "netlify/functions"
+
+[build.environment]
+  NODE_VERSION = "24"
+  NPM_VERSION = "11"
+
+# Redirect API calls to serverless functions
+[[redirects]]
+  from = "/api/*"
+  to = "/.netlify/functions/:splat"
+  status = 200
+
+# Single Page Application (SPA) routing
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+
+# Cache headers
+[[headers]]
+  for = "/static/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/"
+  [headers.values]
+    X-Content-Type-Options = "nosniff"
+    X-Frame-Options = "DENY"
+    X-XSS-Protection = "1; mode=block"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+
+# Environment variables (set in Netlify UI or .env file)
+[context.production.environment]
+  VITE_API_BASE_URL = "https://your-api-domain.com"
+  GEMINI_MODEL = "gemini-2.0-flash"
+  DPO_EMAIL = "privacy@your-domain.com"
+
+[context.deploy-preview.environment]
+  VITE_API_BASE_URL = "https://preview-api.your-domain.com"
+
+[context.branch-deploy.environment]
+  VITE_API_BASE_URL = "https://staging-api.your-domain.com"
