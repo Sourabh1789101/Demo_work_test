@@ -1,18 +1,24 @@
 {
   "version": 2,
   "projectSettings": {
-    "buildCommand": "npm run build",
+    "buildCommand": "turbo run build --filter=apps/web",
     "outputDirectory": "apps/web/dist",
-    "devCommand": "npm run dev",
+    "devCommand": "npm run dev:web",
     "installCommand": "npm install"
   },
   "framework": "vite",
   "public": false,
+  "functions": {
+    "api/**/*.ts": {
+      "runtime": "nodejs24.x"
+    }
+  },
   "github": {
     "silent": false,
     "autoAlias": false,
     "autoJobCancelOnPush": true,
-    "protected": false
+    "protected": false,
+    "enabled": true
   },
   "env": [
     {
