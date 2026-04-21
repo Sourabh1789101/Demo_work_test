@@ -1,6 +1,6 @@
 [build]
   # Build command for monorepo
-  command = "turbo run build --filter=apps/web"
+  command = "npm run build -w @formbuilder/web"
   # Output directory (where Netlify will serve from)
   publish = "apps/web/dist"
   # Base directory
